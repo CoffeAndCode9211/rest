@@ -12,12 +12,15 @@
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
 			<version>3.0.4.Final</version>
+			<!-- if scope not set gives " Could not find constructor for class: org.jboss.resteasy.core.AsynchronousDispatcher" -->
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
-	<build><finalName>${project.artifactId}</finalName></build>
-
-
+	<!-- imp this will force deployed file name to be artifacid else in url 
+		we need to provide complete file name including 0.0.1-SNAPSHOT -->
+	<build>
+		<finalName>${project.artifactId}</finalName>
+	</build>
 
 </project>
