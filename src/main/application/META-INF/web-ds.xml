@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources xmlns="http://www.jboss.org/ironjacamar/schema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.jboss.org/ironjacamar/schema http://docs.jboss.org/ironjacamar/schema/datasources_1_0.xsd">
+	<!-- The datasource is bound into JNDI at this location. We reference this 
+		in META-INF/persistence.xml -->
+	<datasource jndi-name="java:jboss/datasources/webDS"
+		pool-name="webDS" enabled="true" jta="false" use-java-context="true"
+		use-ccm="true">
+		<connection-url>jdbc:mysql://localhost:3306/employee_db</connection-url>
+		<driver>mysql</driver>
+		<pool>
+			<max-pool-size>1000</max-pool-size>
+		</pool>
+		<security>
+			<user-name>root</user-name>
+			<password>vista123</password>
+		</security>
+		<validation>
+			<validate-on-match>false</validate-on-match>
+			<background-validation>false</background-validation>
+			<background-validation-millis>0</background-validation-millis>
+		</validation>
+	</datasource>
+</datasources>
