@@ -11,7 +11,7 @@
 	</context-param>
 	<context-param>
 		<param-name>resteasy.servlet.mapping.prefix</param-name>
-		<param-value>/</param-value>
+		<param-value>/rest</param-value>
 	</context-param>
 
 	<listener>
@@ -28,11 +28,11 @@
 
 	<servlet-mapping>
 		<servlet-name>resteasy-servlet</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/rest/*</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>html/welcome.html</welcome-file>
+		<welcome-file>/html/welcome.html</welcome-file>
 	</welcome-file-list>
 
 
