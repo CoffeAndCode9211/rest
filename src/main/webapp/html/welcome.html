@@ -64,33 +64,25 @@
 
 var selectedEmpId = "";
 function searchEmployee(){
-	var url = "/employee?";
-	/* if($("#lastName").val() != ""){
-		url += "&lastName="+$("#txtEmpLastName").val();
-	}
-	if($("#firstName").val() != ""){
-		url += "&firstName="+$("#txtEmpFirstName").val();
-	}
-	if($("#email").val() != ""){
-		url += "&email="+$("#txtEmpEmail").val();
-	}
-	if($("#phone").val() != ""){
-		url += "&phone="+$("#txtEmpPhone").val();
-	} */
-
-	url += $("#employeeForm").serialize();
 	
-	$.get(url, function(data, status){
-		$("#tblEmpDetail").empty();
-		if(data.length > 0){
-			var empTable = "<table><tr  class='empTableHeader'><td>First Name</td><td>Last Name</td><td>Email</td><td>Phone</td></tr>";
-            for(var i=0; i < data.length; i++){
-            	empTable += "<tr onclick='setEmployee("+data[i].id+")' ><td>"+data[i].firstName+"</td><td>"+data[i].lastName+"</td><td>"
-            			+data[i].email+"</td><td>"+data[i].phone+"</td><td style='display : none;' >"+data[i].id+"</td></tr>";
-            }
-            $("#tblEmpDetail").append(empTable+"</table>");
-		}else{
-			 $("#tblEmpDetail").append("No data Found");
+	var url = "rest/employee?";
+	url += $("#employeeForm").serialize();
+	$.ajax({
+		type : "GET",
+		url : url,
+		success : function(data) {
+	        
+			$("#tblEmpDetail").empty();
+			if(data.length > 0){
+				var empTable = "<table><tr  class='empTableHeader'><td>First Name</td><td>Last Name</td><td>Email</td><td>Phone</td></tr>";
+	            for(var i=0; i < data.length; i++){
+	            	empTable += "<tr onclick='setEmployee("+data[i].id+")' ><td>"+data[i].firstName+"</td><td>"+data[i].lastName+"</td><td>"
+	            			+data[i].email+"</td><td>"+data[i].phone+"</td><td style='display : none;' >"+data[i].id+"</td></tr>";
+	            }
+	            $("#tblEmpDetail").append(empTable+"</table>");
+			}else{
+				 $("#tblEmpDetail").append("No data Found");
+			}
 		}
     });
 }
@@ -101,21 +93,27 @@ function resetEmployee(){
 	$("#txtEmpPhone").val("");
 	$("#txtEmpEmail").val("");
 	$("#tblEmpDetail").empty();
+	$("#btnSaveEmployee").val("Save");
 	selectedEmpId = "";
 }
 
 
 function saveEmployee(){
-	var url = "/employee";
+	var url = "rest/employee";
+	var type = "POST";
 	var data = {
 			firstName : $("#txtEmpFirstName").val(),
 			lastName : $("#txtEmpLastName").val(),
 			email : $("#txtEmpEmail").val(),
 			phone : $("#txtEmpPhone").val(),
 			};
+	if(selectedEmpId != ""){
+		type = "PUT";
+		url += "/"+selectedEmpId;
+	}
 	
 	$.ajax({
-		type : "POST",
+		type : type,
 		url : url,
 		data : JSON.stringify(data),
 		contentType: "application/json",
@@ -129,9 +127,10 @@ function saveEmployee(){
 }
 
 function setEmployee(employeeId){
-	var url = "/employee/"+employeeId;
+	var url = "rest/employee/"+employeeId;
 	$.get(url, function(data, status){
 		selectedEmpId = employeeId;
+		$("#btnSaveEmployee").val("Update");
 		$("#txtEmpFirstName").val(data.firstName);
  		$("#txtEmpLastName").val(data.lastName);
  		$("#txtEmpEmail").val(data.email);
@@ -143,12 +142,12 @@ function deleteEmployee(){
 	if(selectedEmpId != ""){
 		$.ajax({
 			type : "DELETE",
-			url : '/employee/'+selectedEmpId,
+			url : 'rest/employee/'+selectedEmpId,
 			success : function(data) {
-		         alert(data.message);
+		         alert(data);
 		         resetEmployee();
 		         searchEmployee();
-	      	}, error : function(error){}
+	      	}, error : function(error){ alert('error');}
 		});
 	}
 }
@@ -176,7 +175,7 @@ function deleteEmployee(){
 			<div class="row">
 				<label>Email:</label>
 				<div class="inputField">
-					<input type="email" name="txtEmpEmail" id="txtEmpEmail">
+					<input type="text" name="txtEmpEmail" id="txtEmpEmail">
 				</div>
 			</div>
 			<div class="row">
@@ -186,10 +185,11 @@ function deleteEmployee(){
 				</div>
 			</div>
 			<div class="btnContainer">
-				<input type="button" id="btnSearch" onclick="searchEmployee()" value="Search"> 
-				<input type="submit" value="Save" onclick="saveEmployee()"> 
-				<input type="button" value="Delete" onclick="deleteEmployee()">
-				<input type="button" value="Reset" onclick="resetEmployee()">
+				<input type="button" id="btnSearch" onclick="searchEmployee()"
+					value="Search"> <input type="button" value="Save"
+					onclick="saveEmployee()" id="btnSaveEmployee"> <input type="button"
+					value="Delete" onclick="deleteEmployee()"> <input
+					type="button" value="Reset" onclick="resetEmployee()">
 			</div>
 			<div id="tblEmpDetail"></div>
 		</form>

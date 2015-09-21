@@ -3,16 +3,19 @@ package com.webservice.rest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
@@ -21,13 +24,12 @@ import org.slf4j.LoggerFactory;
 import com.webservice.dto.EmployeeTO;
 import com.webservice.model.Employee;
 import com.webservice.service.EmployeeEJBIf;
-import com.webservice.service.EmployeeEJBImpl;
 
-
+@Stateless
 public class EmployeeImpl implements EmployeeIf{
 
 	Response.ResponseBuilder builder = null;
-	private static final Logger logger = LoggerFactory.getLogger(EmployeeEJBImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(EmployeeImpl.class);
 
 	@EJB
 	private EmployeeEJBIf empEJbIf;
@@ -36,15 +38,23 @@ public class EmployeeImpl implements EmployeeIf{
 	private Validator validator;
 
 
-	public List<EmployeeTO> getEmployeeDetails( EmployeeTO empTo) {
+	public List<EmployeeTO> getEmployeeDetails( String lastName, 
+				String firstName, String email, String phone) {
 		List<EmployeeTO> lstEmpTo = null;
 		try{
-			Employee emp = transformToEmployee(empTo);
+			Employee emp = new Employee();
+			emp.setEmail(email);
+			emp.setFirstName(firstName);
+			emp.setLastName(lastName);
+			emp.setPhone(phone);
 			List<Employee>  lstEmployee = empEJbIf.getEmployeesByFilter(emp);
 			if(lstEmployee != null && !lstEmployee.isEmpty()){
 				lstEmpTo = new ArrayList<EmployeeTO>();
-				while(lstEmployee.iterator().hasNext()){
-					lstEmpTo.add(transformToEmployeeTO(lstEmployee.iterator().next()));
+				Iterator<Employee > itr = lstEmployee.iterator();
+				while(itr.hasNext()){
+					logger.info("next Data");
+					Employee e = itr.next();
+					lstEmpTo.add(transformToEmployeeTO(e));
 				}
 			}
 
@@ -57,6 +67,10 @@ public class EmployeeImpl implements EmployeeIf{
 	public EmployeeTO getEmployeeById(int id) {
 		EmployeeTO employeeTO = null;
 		try{
+			logger.info("id is :"+id);
+			if(empEJbIf == null){
+				logger.info("hola");
+			}
 			Employee emp = empEJbIf.getEmployeeById(id);
 			if(emp != null ){
 				employeeTO = transformToEmployeeTO(emp);
@@ -69,6 +83,7 @@ public class EmployeeImpl implements EmployeeIf{
 
 	public Response addEmployee(EmployeeTO empTo) {
 		try{
+			logger.info(empTo.toString());
 			validateEmployee(empTo);
 			Employee emp = transformToEmployee(empTo);
 			Boolean response = empEJbIf.addEmployee(emp);
@@ -115,8 +130,7 @@ public class EmployeeImpl implements EmployeeIf{
 	public Response deleteEmployee(int id) {
 		try{
 
-			Employee emp = new Employee();
-			emp.setId(id);
+			Employee emp = empEJbIf.getEmployeeById(id);
 			Boolean response = empEJbIf.deleteEmployee(emp);
 			if(response){
 				return Response.ok().entity("Employee deleted successfully").build();

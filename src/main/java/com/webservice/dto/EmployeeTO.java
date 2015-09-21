@@ -70,4 +70,8 @@ public class EmployeeTO {
 		this.phone = phone;
 	}
 	
+	@Override
+	public String toString() {
+		return lastName+" : "+firstName+" : "+email+" : "+phone;
+	}
 }
