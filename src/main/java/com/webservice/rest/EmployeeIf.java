@@ -33,14 +33,17 @@ public interface EmployeeIf {
 
 	@POST
 	@Path("/")
+	@Produces({MediaType.APPLICATION_JSON})
 	public Response addEmployee( EmployeeTO empTo);
 
 	@PUT
 	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_JSON})
 	public Response updateEmployee(EmployeeTO sm, @PathParam("id") int id);
 
 	@DELETE
 	@Path("/{id}")
+	@Produces({MediaType.APPLICATION_JSON})
 	public Response deleteEmployee(@PathParam("id") int id);
 
 }

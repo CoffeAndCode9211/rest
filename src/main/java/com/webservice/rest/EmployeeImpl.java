@@ -15,7 +15,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.slf4j.Logger;
@@ -87,10 +86,13 @@ public class EmployeeImpl implements EmployeeIf{
 			validateEmployee(empTo);
 			Employee emp = transformToEmployee(empTo);
 			Boolean response = empEJbIf.addEmployee(emp);
+			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				return Response.ok().entity("Employee saved successfully").build();
+				responseObj.put("Success", "Employee saved successfully");
+				return Response.ok().entity(responseObj).build();
 			}else{
-				return Response.noContent().entity("Error while saving Employee").build();
+				responseObj.put("Error", "Error while saving Employee");
+				return Response.noContent().entity(responseObj).build();
 			}
 
 		}catch (ConstraintViolationException ce) {
@@ -115,12 +117,14 @@ public class EmployeeImpl implements EmployeeIf{
 			Employee emp = transformToEmployee(empTo);
 			emp.setId(id);
 			Boolean response = empEJbIf.updateEmployee(emp);
+			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				return Response.ok().entity("Employee updated successfully").build();
+				responseObj.put("Success", "Employee updated successfully");
+				return Response.ok().entity(responseObj).build();
 			}else{
-				return Response.noContent().entity("Error while updating Employee").build();
+				responseObj.put("Error", "Error while updating Employee");
+				return Response.noContent().entity(responseObj).build();
 			}
-
 		}catch(Exception e){
 			e.printStackTrace();
 			return Response.noContent().entity(e.getMessage()).build();
@@ -132,15 +136,20 @@ public class EmployeeImpl implements EmployeeIf{
 
 			Employee emp = empEJbIf.getEmployeeById(id);
 			Boolean response = empEJbIf.deleteEmployee(emp);
+			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				return Response.ok().entity("Employee deleted successfully").build();
+				responseObj.put("Success", "Employee deleted successfully");
+				return Response.ok().entity(responseObj).build();
 			}else{
-				return Response.noContent().entity("Error while deleting Employee").build();
+				responseObj.put("Error", "Error while deleting Employee");
+				return Response.noContent().entity(responseObj).build();
 			}
 
 		}catch(Exception e){
 			e.printStackTrace();
-			return Response.noContent().entity("Error while updating Employee").build();
+			Map<String, String> responseObj = new HashMap<String, String>();
+			responseObj.put("Error", "Error while deleting Employee");
+			return Response.noContent().entity(responseObj).build();
 		}
 	}
 

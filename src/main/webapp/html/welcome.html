@@ -83,6 +83,9 @@ function searchEmployee(){
 			}else{
 				 $("#tblEmpDetail").append("No data Found");
 			}
+		},
+		error : function(error){
+			alert(error);
 		}
     });
 }
@@ -118,10 +121,10 @@ function saveEmployee(){
 		data : JSON.stringify(data),
 		contentType: "application/json",
 		success : function(data) {
-	         alert(data);
+	         alert(data.Success);
 	         resetEmployee();
 	         searchEmployee();
-      	}, error : function(error){}
+      	}, error : function(error){ alert(JSON.stringify(error.responseText));}
 	});
 	
 }
@@ -144,10 +147,10 @@ function deleteEmployee(){
 			type : "DELETE",
 			url : 'rest/employee/'+selectedEmpId,
 			success : function(data) {
-		         alert(data);
+		         alert(data.Success);
 		         resetEmployee();
 		         searchEmployee();
-	      	}, error : function(error){ alert('error');}
+	      	}, error : function(error){ alert(error.Error); }
 		});
 	}
 }
