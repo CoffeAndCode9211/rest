@@ -7,7 +7,7 @@ package com.webservice.security;
 import java.io.Serializable;
 
 /**
- * @author Sushant
+ * @author Ashish
  *
  */
 public class Role implements Serializable{

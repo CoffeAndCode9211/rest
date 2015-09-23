@@ -10,7 +10,7 @@ import java.util.Collection;
 import javax.security.auth.Subject;
 
 /**
- * @author Sushant
+ * @author Ashish
  *
  */
 public class SecurityPrincipal implements Principal,Serializable{

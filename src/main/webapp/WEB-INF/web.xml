@@ -54,7 +54,7 @@
 	<login-config>
     	       <!-- BASIC, DIGEST, FORM, CLIENT-CERT -->
         <auth-method>FORM</auth-method>
-        <realm-name>ADTSecurityDomain</realm-name>
+        <realm-name>WebSecurityDomain</realm-name>
         <form-login-config>
         	<form-login-page>/pages/Login.jsp</form-login-page>
         	<form-error-page>/pages/error.jsp</form-error-page>

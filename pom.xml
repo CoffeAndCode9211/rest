@@ -31,14 +31,14 @@
 			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
 			<version>1.0.2.Final</version>
 		</dependency>
-		
+
 		<!-- Validationg Form -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>1.0.0.GA</version>
 		</dependency>
-		<!-- logger  -->
+		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -53,10 +53,10 @@
 		</dependency>
 
 		<dependency>
-	<groupId>org.jboss.as</groupId>
-	<artifactId>jboss-as-security</artifactId>
-	<version>7.1.1.Final</version>
-</dependency>
+			<groupId>org.jboss.as</groupId>
+			<artifactId>jboss-as-security</artifactId>
+			<version>7.1.1.Final</version>
+		</dependency>
 
 
 

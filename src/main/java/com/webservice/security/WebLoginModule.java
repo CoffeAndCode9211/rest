@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.webservice.security;
 
 import java.math.BigInteger;
@@ -16,10 +14,10 @@ import org.jboss.security.auth.spi.UsernamePasswordLoginModule;
 
 
 /**
- * @author Sushant
+ * @author Ashish
  *
  */
-public class ADTLoginModule extends UsernamePasswordLoginModule{
+public class WebLoginModule extends UsernamePasswordLoginModule{
 
 	private SecurityPrincipal sp = null;
 	 Subject sub ;
@@ -57,7 +55,6 @@ public class ADTLoginModule extends UsernamePasswordLoginModule{
 				  sp.setColRole(null);; // TODO: fix this.
 				  
 				  return true;
-				  //return isValidUser(username, password);
 			  }
 			  catch(Exception e) {
 				  e.printStackTrace();
@@ -80,11 +77,8 @@ public class ADTLoginModule extends UsernamePasswordLoginModule{
 			Group callerPrincipal = new SimpleGroup("CallerPrincipal");
 			Group roles = new SimpleGroup("Roles");
 	        Group[] groups = {roles,callerPrincipal};	        
-	       // SecurityPrincipal sp = (SecurityPrincipal)this.getIdentity();
-	        //groups[0].addMember();
 	        roles.addMember(new SecurityPrincipal("SecurityAdmin"));
 	        callerPrincipal.addMember(sp);
-	        //System.out.println(this.getUnauthenticatedIdentity().getName());	        	        
 			return groups;
 		}
 		catch(Exception e) {
@@ -93,7 +87,6 @@ public class ADTLoginModule extends UsernamePasswordLoginModule{
 		}
 
 	}
-	
 	 private String hashPassword(String password) {
 	        String hashword = null;
 	        try {
