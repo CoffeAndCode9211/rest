@@ -5,6 +5,7 @@
 	version="2.0">
 
 	<persistence-unit name="webUnit">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/webDS</jta-data-source>
 		<class>com.webservice.model.Employee</class>
 		<properties>
