@@ -52,4 +52,8 @@ public interface EmployeeEJBIf {
 	 * @throws Exception
 	 */
 	public boolean deleteEmployee(Employee employee) throws Exception;
+	
+	public Boolean checkLogin(String username, String password);
+	
+	
 }

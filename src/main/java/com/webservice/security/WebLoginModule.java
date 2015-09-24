@@ -5,12 +5,19 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.security.acl.Group;
+import java.util.Collection;
+import java.util.Hashtable;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginException;
 
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.auth.spi.UsernamePasswordLoginModule;
+import org.jboss.security.auth.spi.Users;
+
+import com.webservice.service.EmployeeEJBIf;
 
 
 /**
@@ -53,8 +60,8 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 				  sp.setPassword(password);				
 				  sp.setSubj(sub);	
 				  sp.setColRole(null);; // TODO: fix this.
-				  
-				  return true;
+				  System.out.println("username: "+username);
+				  return isValidUser(username, password);
 			  }
 			  catch(Exception e) {
 				  e.printStackTrace();
@@ -71,6 +78,24 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 		return null;
 	}
 
+	public boolean isValidUser(String username, String password)  {
+		boolean result=false;
+		try{
+			final Hashtable jndiProperties = new Hashtable();
+			jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
+			final Context context = new InitialContext(jndiProperties);
+			System.out.println("getting value");
+			EmployeeEJBIf lif = (EmployeeEJBIf) context.lookup("java:global/!EmployeeEJBIf");
+			System.out.println("loading data");
+			password=hashPassword(password);
+		}catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		return result;
+	}
+	
+	
 	@Override
 	protected Group[] getRoleSets() throws LoginException {
 		try {			

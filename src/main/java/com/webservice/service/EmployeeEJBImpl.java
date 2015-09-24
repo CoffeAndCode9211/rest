@@ -1,11 +1,14 @@
 package com.webservice.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
+import org.jboss.security.auth.spi.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -84,6 +87,19 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 			return true;
 		}
 		return false;
+	}
+
+	public Boolean checkLogin(String username, String password) {
+
+		Query q = em.createQuery("SELECT u FROM Users u WHERE u.userName = "
+				+ " '"+username+"' and u.password = '"+password+"' and u.status = 'A' ");
+		
+		Collection<Object> s = q.getResultList();
+		if(s != null && !s.isEmpty()){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 
