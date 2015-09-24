@@ -58,7 +58,7 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 				  sp.setUsername(p.getName());
 				  sp.setPassword(password);				
 				  sp.setSubj(sub);	
-				  sp.setColRole(null);; // TODO: fix this.
+				  sp.setColRole(null);
 				  System.out.println("username: "+username);
 				  status = isValidUser(username, password);
 			  }

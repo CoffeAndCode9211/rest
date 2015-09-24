@@ -1,0 +1,8 @@
+Ways to lookup JNDI 
+
+java:global/webservice/EmployeeImpl!com.webservice.rest.EmployeeIf
+java:app/webservice/EmployeeImpl!com.webservice.rest.EmployeeIf
+java:module/EmployeeImpl!com.webservice.rest.EmployeeIf
+java:global/webservice/EmployeeImpl
+java:app/webservice/EmployeeImpl
+java:module/EmployeeImpl

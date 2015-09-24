@@ -53,6 +53,12 @@ public interface EmployeeEJBIf {
 	 */
 	public boolean deleteEmployee(Employee employee) throws Exception;
 	
+	/**
+	 * Check user login
+	 * @param username
+	 * @param password
+	 * @return
+	 */
 	public Boolean checkLogin(String username, String password);
 	
 	
