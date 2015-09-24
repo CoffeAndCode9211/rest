@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.security.acl.Group;
-import java.util.Collection;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -15,7 +14,6 @@ import javax.security.auth.login.LoginException;
 
 import org.jboss.security.SimpleGroup;
 import org.jboss.security.auth.spi.UsernamePasswordLoginModule;
-import org.jboss.security.auth.spi.Users;
 
 import com.webservice.service.EmployeeEJBIf;
 
@@ -40,6 +38,7 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 	@Override
 	protected boolean validatePassword(String username, String password)
 	{
+		boolean status = false;	
 		Principal p = this.getIdentity();
 		sub = new Subject();
 		
@@ -61,15 +60,15 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 				  sp.setSubj(sub);	
 				  sp.setColRole(null);; // TODO: fix this.
 				  System.out.println("username: "+username);
-				  return isValidUser(username, password);
+				  status = isValidUser(username, password);
 			  }
 			  catch(Exception e) {
 				  e.printStackTrace();
 				  		  
 			  }
 		  }
-				
-		return false;
+		  System.out.println("final Status: "+status);
+		return status;		
 	}
 	
 	@Override
@@ -81,13 +80,12 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 	public boolean isValidUser(String username, String password)  {
 		boolean result=false;
 		try{
-			final Hashtable jndiProperties = new Hashtable();
+			final Hashtable<String, String> jndiProperties = new Hashtable<String, String>();
 			jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
 			final Context context = new InitialContext(jndiProperties);
-			System.out.println("getting value");
-			EmployeeEJBIf lif = (EmployeeEJBIf) context.lookup("java:global/!EmployeeEJBIf");
-			System.out.println("loading data");
+			EmployeeEJBIf lif = (EmployeeEJBIf) context.lookup("java:global/webservice/EmployeeEJBImpl!com.webservice.service.EmployeeEJBIf");
 			password=hashPassword(password);
+			result = lif.checkLogin(username, password);
 		}catch(Exception e){
 			e.printStackTrace();
 			return false;

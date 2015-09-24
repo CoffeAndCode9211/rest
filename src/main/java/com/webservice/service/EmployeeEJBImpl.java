@@ -8,11 +8,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.jboss.security.auth.spi.Users;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.webservice.model.Employee;
+import com.webservice.model.Users;
 
 /**
  * Employee Service Implementation 
@@ -89,12 +89,13 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Boolean checkLogin(String username, String password) {
 
 		Query q = em.createQuery("SELECT u FROM Users u WHERE u.userName = "
-				+ " '"+username+"' and u.password = '"+password+"' and u.status = 'A' ");
+				+ " '"+username+"' and u.password = '"+password+"' ");
 		
-		Collection<Object> s = q.getResultList();
+		Collection<Users> s = q.getResultList();
 		if(s != null && !s.isEmpty()){
 			return true;
 		}else{
