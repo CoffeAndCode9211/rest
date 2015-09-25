@@ -155,6 +155,16 @@ function deleteEmployee(){
 	}
 }
 
+
+function logout(){
+	$.ajax({
+		type : "PUT",
+		url : 'rest/employee/logout',
+		success : function(data) {
+			window.location.replace(window.location.href);
+      	}, error : function(error){ alert(error.Error); }
+	});
+}
 </script>
 </head>
 <body>
@@ -190,9 +200,10 @@ function deleteEmployee(){
 			<div class="btnContainer">
 				<input type="button" id="btnSearch" onclick="searchEmployee()"
 					value="Search"> <input type="button" value="Save"
-					onclick="saveEmployee()" id="btnSaveEmployee"> <input type="button"
-					value="Delete" onclick="deleteEmployee()"> <input
-					type="button" value="Reset" onclick="resetEmployee()">
+					onclick="saveEmployee()" id="btnSaveEmployee"> <input
+					type="button" value="Delete" onclick="deleteEmployee()"> <input
+					type="button" value="Reset" onclick="resetEmployee()"> <input
+					type="button" value="Logout" onclick="logout()">
 			</div>
 			<div id="tblEmpDetail"></div>
 		</form>

@@ -11,12 +11,15 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -193,5 +196,16 @@ public class EmployeeImpl implements EmployeeIf{
 			responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
 		}
 		return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
+	}
+
+	public void logout(HttpServletRequest req){
+		try{
+			HttpSession session = req.getSession();
+			session.invalidate();
+			session = req.getSession(false);
+		}catch(Exception e){
+			logger.error("There is an exception");
+			e.printStackTrace();
+		}
 	}
 }
