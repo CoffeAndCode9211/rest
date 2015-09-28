@@ -76,4 +76,9 @@ public class Employee implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	
+	
+	public String toString(){
+		return id+" : "+lastName+" : "+firstName+" : "+email+" : "+phone;
+	}
 }
