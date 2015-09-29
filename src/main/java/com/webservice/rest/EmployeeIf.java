@@ -53,5 +53,10 @@ public interface EmployeeIf {
 	@Produces({MediaType.APPLICATION_JSON})
 	public void logout(@Context HttpServletRequest req);
 	
+	
+	@GET
+	@Path("/employeeReport")
+	@Produces({"application/pdf"})
+	public Response getEmployeeReport();
 
 }

@@ -5,7 +5,7 @@
 	<queryString>
 		<![CDATA[Select Now() as now;]]>
 	</queryString>
-	<field name="name" class="java.lang.String">
+	<field name="firstName" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="email" class="java.lang.String">
@@ -34,7 +34,7 @@
 			<textField>
 				<reportElement x="167" y="9" width="100" height="20"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{firstName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="390" y="12" width="100" height="20"/>

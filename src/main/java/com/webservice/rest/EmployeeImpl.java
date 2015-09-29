@@ -1,5 +1,6 @@
 package com.webservice.rest;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,15 +18,16 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.webservice.dto.EmployeeTO;
 import com.webservice.model.Employee;
 import com.webservice.service.EmployeeEJBIf;
+import com.webservice.service.ReportEJBIf;
 
 @Stateless
 public class EmployeeImpl implements EmployeeIf{
@@ -35,6 +37,9 @@ public class EmployeeImpl implements EmployeeIf{
 
 	@EJB
 	private EmployeeEJBIf empEJbIf;
+	
+	@EJB
+	private ReportEJBIf repEJbIf;
 
 	@Inject
 	private Validator validator;
@@ -207,5 +212,20 @@ public class EmployeeImpl implements EmployeeIf{
 			logger.error("There is an exception");
 			e.printStackTrace();
 		}
+	}
+
+	public Response getEmployeeReport() {
+		byte[] result = null;
+		try{
+			List<Employee>  lstEmployee = empEJbIf.getEmployeesByFilter(new Employee());
+			ByteArrayOutputStream baos = repEJbIf.getReport(lstEmployee);			
+			result = baos.toByteArray();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return Response.ok(result,MediaType.APPLICATION_OCTET_STREAM)
+				.header("content-disposition", "inline; filename=employeeReport.pdf")
+				.type("application/pdf")
+				.build();
 	}
 }

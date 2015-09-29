@@ -27,7 +27,7 @@ public class ReportGenerator {
 			JasperReport jasperReport;
 			JasperPrint jasperPrint;
 
-			InputStream jasperFile = this.getClass().getResourceAsStream("../../../../jrxml/"+rptEvent.getReportFileName());
+			InputStream jasperFile = this.getClass().getResourceAsStream("../../../jrxml/"+rptEvent.getReportFileName());
 
 			System.out.println("Jasper path :"+jasperFile.toString());
 
