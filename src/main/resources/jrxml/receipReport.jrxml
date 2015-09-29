@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<style name="style1" isDefault="false"/>
-	<style name="Crosstab Data Text" isDefault="false" hAlign="Center"/>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2015-09-29T23:39:33 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="563" pageHeight="842" columnWidth="523" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="68c18669-cf39-4ad7-abc1-18b385e84a95">
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="style1"/>
+	<style name="Crosstab Data Text" hTextAlign="Center" hImageAlign="Center"/>
 	<queryString>
 		<![CDATA[Select Now() as now;]]>
 	</queryString>
@@ -11,35 +23,73 @@
 	<field name="email" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="lastName" class="java.lang.String"/>
+	<field name="phone" class="java.lang.String"/>
 	<background>
 		<band/>
 	</background>
 	<title>
-		<band height="111"/>
+		<band height="79">
+			<staticText>
+				<reportElement x="200" y="10" width="120" height="30" uuid="66e198f9-ced8-4ec5-971c-3156f96e720f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Sample iReport View]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
 		<band/>
 	</pageHeader>
 	<columnHeader>
-		<band height="32">
+		<band height="20">
 			<staticText>
-				<reportElement x="231" y="5" width="100" height="20"/>
-				<textElement/>
-				<text><![CDATA[Data]]></text>
+				<reportElement mode="Opaque" x="0" y="0" width="130" height="20" forecolor="#E8C4C3" backcolor="#121010" uuid="65a0431e-e30d-45a8-a103-4253b8115e9a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[First Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="131" y="0" width="130" height="20" forecolor="#E8C4C3" backcolor="#121010" uuid="575d6e62-7fee-43b5-b968-83a107b61adf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Last Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="262" y="0" width="130" height="20" forecolor="#E8C4C3" backcolor="#121010" uuid="447eff3d-8d91-4e98-81b7-9cf9a2f46d70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="393" y="0" width="130" height="20" forecolor="#E8C4C3" backcolor="#121010" uuid="ae0e67df-dba2-4ee6-bec8-a86a1c132062"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Phone]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="41">
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField>
-				<reportElement x="167" y="9" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{firstName}]]></textFieldExpression>
+				<reportElement x="0" y="0" width="130" height="20" uuid="d48cc9a0-6d1f-4968-93ba-32c86324b237">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{firstName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="12" width="100" height="20"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{email}]]></textFieldExpression>
+				<reportElement x="262" y="0" width="130" height="20" uuid="bada3528-b30d-4a34-8a65-17cc5452bcca"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="0" width="130" height="20" uuid="8c054dea-b25c-4439-b222-53fd5b35b9e0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{lastName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="393" y="0" width="130" height="20" uuid="1f9c27d5-91d0-42f2-a98c-2f37566c5c5b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{phone}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

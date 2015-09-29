@@ -16,8 +16,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@Startup
-@Singleton
+//@Startup
+//@Singleton
 public class QuartzCdiExample {
 
 	private static final Logger logger = LoggerFactory.getLogger(QuartzCdiExample.class);

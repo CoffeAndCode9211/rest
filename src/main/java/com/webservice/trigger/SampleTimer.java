@@ -25,8 +25,8 @@ import com.webservice.service.EmployeeEJBIf;
  * @author ashishkumar
  *
  */
-@Startup
-@Singleton
+//@Startup
+//@Singleton
 public class SampleTimer {
 
 	@Resource
