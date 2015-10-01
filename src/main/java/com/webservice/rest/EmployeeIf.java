@@ -58,5 +58,10 @@ public interface EmployeeIf {
 	@Path("/employeeReport")
 	@Produces({"application/pdf"})
 	public Response getEmployeeReport();
+	
+	@GET
+	@Path("/article")
+	@Produces({"application/pdf"})
+	public Response getArticle();
 
 }

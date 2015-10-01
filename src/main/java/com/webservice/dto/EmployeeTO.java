@@ -29,6 +29,15 @@ public class EmployeeTO {
 	@FormParam("txtEmpPhone")
 	private String phone;
 
+	
+	public EmployeeTO(){
+		
+	}
+	
+	public EmployeeTO(String firstName, String lastName){
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
 
 	public Integer getId() {
 		return id;

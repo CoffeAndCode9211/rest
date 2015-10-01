@@ -228,4 +228,8 @@ public class EmployeeImpl implements EmployeeIf{
 				.type("application/pdf")
 				.build();
 	}
+
+	public Response getArticle() {
+		return null;
+	}
 }
