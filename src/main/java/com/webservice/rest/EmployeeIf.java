@@ -28,6 +28,7 @@ public interface EmployeeIf {
 			@QueryParam("txtEmpEmail") String email, 
 			@QueryParam("txtEmpPhone") String phone);
 
+	
 	@GET
 	@Path("/{id}")
 	@Produces({MediaType.APPLICATION_JSON})
@@ -59,9 +60,4 @@ public interface EmployeeIf {
 	@Produces({"application/pdf"})
 	public Response getEmployeeReport();
 	
-	@GET
-	@Path("/article")
-	@Produces({"application/pdf"})
-	public Response getArticle();
-
 }

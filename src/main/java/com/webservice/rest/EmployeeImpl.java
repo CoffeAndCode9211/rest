@@ -37,16 +37,15 @@ public class EmployeeImpl implements EmployeeIf{
 
 	@EJB
 	private EmployeeEJBIf empEJbIf;
-	
+
 	@EJB
 	private ReportEJBIf repEJbIf;
-
+	
 	@Inject
 	private Validator validator;
 
-
 	public List<EmployeeTO> getEmployeeDetails( String lastName, 
-				String firstName, String email, String phone) {
+			String firstName, String email, String phone) {
 		List<EmployeeTO> lstEmpTo = null;
 		try{
 			Employee emp = new Employee();
@@ -61,7 +60,7 @@ public class EmployeeImpl implements EmployeeIf{
 				while(itr.hasNext()){
 					logger.info("next Data");
 					Employee e = itr.next();
-					lstEmpTo.add(transformToEmployeeTO(e));
+					lstEmpTo.add(Common.transformToEmployeeTO(e));
 				}
 			}
 
@@ -80,7 +79,7 @@ public class EmployeeImpl implements EmployeeIf{
 			}
 			Employee emp = empEJbIf.getEmployeeById(id);
 			if(emp != null ){
-				employeeTO = transformToEmployeeTO(emp);
+				employeeTO = Common.transformToEmployeeTO(emp);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -92,7 +91,7 @@ public class EmployeeImpl implements EmployeeIf{
 		try{
 			logger.info(empTo.toString());
 			validateEmployee(empTo);
-			Employee emp = transformToEmployee(empTo);
+			Employee emp = Common.transformToEmployee(empTo);
 			Boolean response = empEJbIf.addEmployee(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
@@ -105,7 +104,7 @@ public class EmployeeImpl implements EmployeeIf{
 
 		}catch (ConstraintViolationException ce) {
 			logger.error("There is an ConstraintViolationException");
-			builder = createViolationResponse(ce.getConstraintViolations());
+			builder = Common.createViolationResponse(ce.getConstraintViolations());
 			return builder.build();
 		} catch (ValidationException e) {
 			Map<String, String> responseObj = new HashMap<String, String>();
@@ -122,7 +121,7 @@ public class EmployeeImpl implements EmployeeIf{
 	public Response updateEmployee(EmployeeTO empTo, int id) {
 		try{
 
-			Employee emp = transformToEmployee(empTo);
+			Employee emp = Common.transformToEmployee(empTo);
 			emp.setId(id);
 			Boolean response = empEJbIf.updateEmployee(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
@@ -161,48 +160,7 @@ public class EmployeeImpl implements EmployeeIf{
 		}
 	}
 
-	private EmployeeTO transformToEmployeeTO(Employee emp){
-		EmployeeTO employeeTO = new EmployeeTO();
-		employeeTO.setLastName(emp.getLastName());
-		employeeTO.setFirstName(emp.getFirstName());
-		employeeTO.setEmail(emp.getEmail());
-		employeeTO.setPhone(emp.getPhone());
-		if(emp.getId() != null){
-			employeeTO.setId(emp.getId());
-		}
-		return employeeTO;
-	}
-
-	private Employee transformToEmployee(EmployeeTO empTo){
-		Employee employee = new Employee();
-		employee.setLastName(empTo.getLastName());
-		employee.setFirstName(empTo.getFirstName());
-		employee.setEmail(empTo.getEmail());
-		employee.setPhone(empTo.getPhone());
-		if(empTo.getId() != null){
-			employee.setId(empTo.getId());
-		}
-
-		return employee;
-	}
-
-
-	private void validateEmployee(EmployeeTO empTO) throws ConstraintViolationException, ValidationException {
-		Set<ConstraintViolation<EmployeeTO>> violations = validator.validate(empTO);
-		if (!violations.isEmpty()) {
-			throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
-		}
-	}
-
-
-	private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
-		Map<String, String> responseObj = new HashMap<String, String>();
-		for (ConstraintViolation<?> violation : violations) {
-			responseObj.put(violation.getPropertyPath().toString(), violation.getMessage());
-		}
-		return Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
-	}
-
+	
 	public void logout(HttpServletRequest req){
 		try{
 			HttpSession session = req.getSession();
@@ -229,7 +187,12 @@ public class EmployeeImpl implements EmployeeIf{
 				.build();
 	}
 
-	public Response getArticle() {
-		return null;
+	
+	public void validateEmployee(EmployeeTO empTO) throws ConstraintViolationException, ValidationException {
+		Set<ConstraintViolation<EmployeeTO>> violations = validator.validate(empTO);
+		if (!violations.isEmpty()) {
+			throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
+		}
 	}
+
 }

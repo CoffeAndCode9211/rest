@@ -40,7 +40,6 @@ public class ReportEJBImpl implements ReportEJBIf {
 			
 			JRDataSource jrd = new JRBeanCollectionDataSource(lstEmp,false);
 			reportEvent.setJrd(jrd);
-			
 			reportEvent.setReportFileName(jasperFile);
 			
 			ReportGenerator portal = new ReportGenerator();
