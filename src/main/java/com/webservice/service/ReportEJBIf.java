@@ -9,7 +9,7 @@ import com.webservice.model.Employee;
 public interface ReportEJBIf {
 
 		
-	public ByteArrayOutputStream getReport(List<Employee> lstEmp);
+	public ByteArrayOutputStream getReport(List<Employee> lstEmp, String type);
 
 	
 

@@ -31,7 +31,7 @@ public class ReportEJBImpl implements ReportEJBIf {
 
 	private static final Logger logger = LoggerFactory.getLogger(ReportEJBImpl.class);
 
-	public ByteArrayOutputStream getReport(List<Employee> lstEmp) {
+	public ByteArrayOutputStream getReport(List<Employee> lstEmp, String type) {
 		ByteArrayOutputStream reportData = null;
 		String jasperFile = "receipReport.jasper";
 		try{
@@ -43,7 +43,7 @@ public class ReportEJBImpl implements ReportEJBIf {
 			reportEvent.setReportFileName(jasperFile);
 			
 			ReportGenerator portal = new ReportGenerator();
-			reportData = portal.generateReport(reportEvent, "pdf");
+			reportData = portal.generateReport(reportEvent, type);
 			
 		}catch(Exception e){
 			e.printStackTrace();

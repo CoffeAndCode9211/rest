@@ -24,6 +24,7 @@
 	float: left;
 	margin-left: 15px;
 	position: relative;
+	padding-right: 30px;
 }
 
 .mainContainer ul>li>a {
@@ -53,7 +54,7 @@
 		if(screenName == "E"){
 			$(".srcContainer").load("employee.html");
 		}else if(screenName == "R"){
-			window.open("rest/employee/employeeReport",'_blank');
+			$(".srcContainer").load("report.html");
 		}else if(screenName == "F"){
 			$(".srcContainer").load("rest/empservlet");
 		}else if(screenName == "L"){

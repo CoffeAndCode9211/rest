@@ -172,19 +172,28 @@ public class EmployeeImpl implements EmployeeIf{
 		}
 	}
 
-	public Response getEmployeeReport() {
+	public Response getEmployeeReport(String type) {
 		byte[] result = null;
 		try{
 			List<Employee>  lstEmployee = empEJbIf.getEmployeesByFilter(new Employee());
-			ByteArrayOutputStream baos = repEJbIf.getReport(lstEmployee);			
+			ByteArrayOutputStream baos = repEJbIf.getReport(lstEmployee, type);			
 			result = baos.toByteArray();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return Response.ok(result,MediaType.APPLICATION_OCTET_STREAM)
-				.header("content-disposition", "inline; filename=employeeReport.pdf")
-				.type("application/pdf")
-				.build();
+		if(type.equals("html")){
+			return Response.ok(result,MediaType.APPLICATION_OCTET_STREAM)
+					.header("content-disposition", "inline; filename=employeeReport.html")
+					.type("text/html")
+					.build();
+		}else if(type.equals("pdf")){
+			return Response.ok(result,MediaType.APPLICATION_OCTET_STREAM)
+					.header("content-disposition", "inline; filename=employeeReport.pdf")
+					.type("application/pdf")
+					.build();
+		}else{
+			return null;
+		}
 	}
 
 	

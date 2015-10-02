@@ -37,8 +37,6 @@ public class Common {
 		return employee;
 	}
 	
-	
-	
 	public static Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
 		Map<String, String> responseObj = new HashMap<String, String>();
 		for (ConstraintViolation<?> violation : violations) {

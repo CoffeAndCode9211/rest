@@ -161,8 +161,8 @@ function resetEmployee(){
 			</div>
 		</div>
 		<div class="btnContainer">
-			<input type="button" value="Search" onClick="searchEmployee()" id="btnSaveEmployee"> 
-			<input type="button" onClick='saveEmployee()' value="Save"> 
+			<input type="button" value="Search" onClick="searchEmployee()" > 
+			<input type="button" onClick='saveEmployee()' value="Save" id="btnSaveEmployee"> 
 			<input type="button" value="Delete" onclick="deleteEmployee()" > 
 			<input type="button" value="Reset" onclick="resetEmployee()" >
 		</div>

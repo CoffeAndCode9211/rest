@@ -1,0 +1,37 @@
+<html>
+<head>
+<style type="text/css">
+.reportContainer {
+	width: 100%;
+	float: left;
+}
+
+.reportContainer .btnContainer {
+	padding: 10px;
+	float: right;
+}
+</style>
+<script type="text/javascript">
+
+	$("#btnPdf").click(function(e){
+		window.open("rest/employee/employeeReport?type=pdf",'_blank');
+	});
+
+	$("#btnHtml").click(function(e){
+		$(".loadReport").load("rest/employee/employeeReport?type=html");
+	});
+
+	$("#btnHtml").click();
+
+</script>
+</head>
+<body>
+	<div class="reportContainer">
+		<div class="btnContainer">
+			<input type="button" id="btnPdf" value="PDF"> <input
+				type="button" value="HTML" id="btnHtml">
+		</div>
+		<div class="loadReport"></div>
+	</div>
+</body>
+</html>

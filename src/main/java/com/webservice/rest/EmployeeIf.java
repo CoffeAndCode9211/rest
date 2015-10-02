@@ -57,7 +57,6 @@ public interface EmployeeIf {
 	
 	@GET
 	@Path("/employeeReport")
-	@Produces({"application/pdf"})
-	public Response getEmployeeReport();
+	public Response getEmployeeReport(@QueryParam("type")String type);
 	
 }

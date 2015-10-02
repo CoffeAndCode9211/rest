@@ -3,6 +3,11 @@ package com.webservice.report;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.webservice.service.ReportEJBImpl;
+
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -19,6 +24,8 @@ import net.sf.jasperreports.engine.util.JRLoader;
 
 public class ReportGenerator {
 	
+	private static final Logger logger = LoggerFactory.getLogger(ReportEJBImpl.class);
+	
 	public ByteArrayOutputStream generateReport(ReportEvent rptEvent, String reportFormatType) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try {
@@ -29,7 +36,7 @@ public class ReportGenerator {
 
 			InputStream jasperFile = this.getClass().getResourceAsStream("../../../jrxml/"+rptEvent.getReportFileName());
 
-			System.out.println("Jasper path :"+jasperFile.toString());
+			logger.info("Jasper path :"+jasperFile.toString());
 
 			jasperReport = (JasperReport)JRLoader.loadObject(jasperFile);       
 			jasperPrint=JasperFillManager.fillReport(jasperReport, rptEvent.getParams(), rptEvent.getJrd());
@@ -44,6 +51,7 @@ public class ReportGenerator {
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.CHARACTER_ENCODING, "UTF-8");
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.JASPER_PRINT, jasperPrint);
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.IS_USING_IMAGES_TO_ALIGN, false);
+				jrHtmlExporter.setParameter(JRHtmlExporterParameter.ZOOM_RATIO, Float.parseFloat("2.0"));
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.IS_REMOVE_EMPTY_SPACE_BETWEEN_ROWS, Boolean.FALSE);
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.IS_WHITE_PAGE_BACKGROUND, Boolean.TRUE);
 				jrHtmlExporter.setParameter(JRHtmlExporterParameter.OUTPUT_STREAM, baos);
