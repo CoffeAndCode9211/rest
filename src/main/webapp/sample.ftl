@@ -9,10 +9,11 @@
 	left: 0;
 	right: 0;
 	margin: auto;
+	color : rgb(80, 127, 128);
 }
 
 .empContainer .header {
-	text-align: center;
+	text-align: left;
 	padding: 5px;
 }
 
@@ -134,7 +135,7 @@ function resetEmployee(){
 <div class="empContainer">
 	<form  id="employeeForm" >
 		<div class="header">
-			<h2 align="center">Employee</h2>
+			<h2>Employee</h2>
 		</div>
 		<div class="row">
 			<label>First Name:</label>

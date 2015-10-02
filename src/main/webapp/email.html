@@ -1,0 +1,123 @@
+<style type="text/css">
+.emailContainer {
+	width: 40%;
+	float: left;
+	position: absolute;
+	top: 70;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.emailContainer .header {
+	text-align: center;
+	padding: 5px;
+}
+
+.emailContainer .h2 {
+	font-family: arial, sans-serif;
+	font-size: 22px;
+}
+
+.emailContainer .row {
+	width: 100%;
+	float: left;
+	padding: 2%;
+}
+
+.emailContainer .row label {
+	float: left;
+	padding-right: 10px;
+	width: 90px;
+}
+
+.emailContainer .row input[type="text"] {
+	float: left;
+}
+
+.emailContainer .btnContainer {
+	text-align: center;
+}
+
+.emailContainer #tblEmpDetail {
+	height: 400px;
+	overflow-y: auto;
+	width: 100%;
+	padding-top: 10px;
+}
+
+.emailContainer #tblEmpDetail table {
+	width: 100%;
+}
+
+.emailContainer #tblEmpDetail table tr:hover {
+	background-color: lightblue;
+}
+
+.emailContainer #tblEmpDetail .empTableHeader {
+	font-weight: bold;
+}
+</style>
+<script type="text/javascript">
+
+
+$("#btnSend").click(function(e){
+	var url = "rest/empservlet/sendMail";
+	var type = "POST";
+	var data = {
+		fromEmail : $("#txtFromEmail").val(),
+		toEmail : $("#txtToEmail").val(),
+		subject : $("#txtSubject").val(),
+		msgBody : $("#txtMessage").val(),
+	};
+	
+	$.ajax({
+		type : type,
+		url : url,
+		data : JSON.stringify(data),
+		contentType: "application/json",
+		success : function(data) {
+	         alert(data.Success);
+	         $(".srcContainer").load("email.html");
+      	}, error : function(error){ alert(JSON.stringify(error.responseText));}
+	});
+	
+});
+
+
+</script>
+<div class="emailContainer">
+	<form id="emailForm">
+		<div class="header">
+			<h2 align="center">Email</h2>
+		</div>
+		<div class="row">
+			<label>From:</label>
+			<div class="inputField">
+				<input type="email" name="txtFromEmail" id="txtFromEmail">
+			</div>
+		</div>
+		<div class="row">
+			<label>To:</label>
+			<div class="inputField">
+				<input type="email" name="txtToEmail" id="txtToEmail">
+			</div>
+		</div>
+		<div class="row">
+			<label>Subject:</label>
+			<div class="inputField">
+				<input type="text" name="txtSubject" id="txtSubject">
+			</div>
+		</div>
+		<div class="row">
+			<label>Message:</label>
+			<div class="inputField">
+				<textarea id="txtMessage" rows="10" cols="100"></textarea>
+			</div>
+		</div>
+		<div class="btnContainer">
+			<input type="button" id="btnSend" value="Send">
+		</div>
+	</form>
+</div>

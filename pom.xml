@@ -76,6 +76,14 @@
 			<version>2.3.20</version>
 		</dependency>
 
+
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<!-- imp this will force deployed file name to be artifacid else in url 

@@ -57,6 +57,8 @@
 			$(".srcContainer").load("report.html");
 		}else if(screenName == "F"){
 			$(".srcContainer").load("rest/empservlet");
+		}else if(screenName == "M"){
+			$(".srcContainer").load("email.html");
 		}else if(screenName == "L"){
 			$.ajax({
 				type : "PUT",
@@ -69,14 +71,12 @@
 					console.log(location.hostname);
 					console.log(document.domain);
 					console.log(window.location.hostname)
-
 					console.log("document.URL : "+document.URL);
 					console.log("document.location.href : "+document.location.href);
 					console.log("document.location.origin : "+document.location.origin);
 					console.log("document.location.hostname : "+document.location.hostname);
 					console.log("document.location.host : "+document.location.host);
 					console.log("document.location.pathname : "+document.location.pathname);
-
 					
 					window.location.replace(baseUrl);
 		      	}, error : function(error){ alert(error.Error); }
@@ -94,6 +94,7 @@
 				<li><a href="#" onClick="loadScreen('R')">Report</a></li>
 				<li><a href="#" onClick="loadScreen('F')">Free Marker
 						Example</a></li>
+				<li><a href="#" onClick="loadScreen('M')">Send Mail</a></li>
 				<li class='logout'><a href="#" onClick="loadScreen('L')">Logout</a></li>
 			</ul>
 		</div>
