@@ -9,7 +9,7 @@
 	left: 0;
 	right: 0;
 	margin: auto;
-	color : rgb(80, 127, 128);
+	color : rgb(11, 13, 12);
 }
 
 .empContainer .header {
