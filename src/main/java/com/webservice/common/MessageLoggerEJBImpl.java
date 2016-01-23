@@ -23,15 +23,15 @@ public class MessageLoggerEJBImpl{
 		       /** Lookup the DataSource, which will be backed by a pool */
 		       
 		       /**   that the application server provides. */
-		       pool = (DataSource)ctx.lookup("java:jboss/datasources/webpmsDS");
+		       pool = (DataSource)ctx.lookup("java:jboss/datasources/webDS");
 		       if (pool == null){
-		           throw new Exception("Unknown DataSource 'jdbc/webpmsDB'");
+		           throw new Exception("Unknown DataSource 'jdbc/webDS'");
 		       }
 		       
 		       conn = pool.getConnection();
 		       stmt = conn.createStatement();	
 		       
-	                sql = "select 8 from Employee";
+	                sql = "select * from Employee";
 	                
 	                System.out.println("email :"+sql.toString());
 	                stmt.executeQuery(sql);

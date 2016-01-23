@@ -33,10 +33,10 @@ public class SampleExample implements Job{
 			EmployeeEJBIf lif = (EmployeeEJBIf) con.lookup("java:global/webservice/EmployeeEJBImpl!com.webservice.service.EmployeeEJBIf");
 			List<Employee> lst = lif.getEmployeesByFilter(new Employee());
 			for(Employee emp : lst){
-				logger.info(emp.toString());
+				logger.info("QuartzCdi Example trigger Running =>"+emp.toString());
 			}
 		}catch(Exception e){
-			logger.info("exception while running vista timer thread :"+e.getMessage());
+			logger.info("exception while running timer thread :"+e.getMessage());
 		}
 	}
 

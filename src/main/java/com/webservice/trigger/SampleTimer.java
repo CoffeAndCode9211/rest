@@ -44,7 +44,7 @@ public class SampleTimer {
 	{
 		timervalue = 30000;
 		if(timervalue!=-1){
-			service.createSingleActionTimer(30000, new TimerConfig(null, false)); // Fire after 1 minute.
+			service.createSingleActionTimer(30000, new TimerConfig(null, false)); // Fire after 30 Sec.O
 		}	
 	}
 
@@ -54,10 +54,10 @@ public class SampleTimer {
 		try{
 			List<Employee> lst = empEJBIf.getEmployeesByFilter(new Employee());
 			for(Employee emp : lst){
-				logger.info(emp.toString());
+				logger.info("javax TimerService trigger Running =>"+emp.toString());
 			}
 		}catch(Exception e){
-			logger.info("exception while running vista timer thread :"+e.getMessage());
+			logger.info("exception while running timer thread :"+e.getMessage());
 		}
 		finally{
 			timervalue = 30000;

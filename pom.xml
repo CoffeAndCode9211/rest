@@ -82,8 +82,14 @@
 			<artifactId>mail</artifactId>
 			<version>1.4</version>
 		</dependency>
-
-
+		
+		<dependency>
+			<groupId>com.twilio.sdk</groupId>
+			<artifactId>twilio-java-sdk</artifactId>
+			<version>6.2.0-edge</version>
+		</dependency>
+		
+		
 	</dependencies>
 
 	<!-- imp this will force deployed file name to be artifacid else in url 

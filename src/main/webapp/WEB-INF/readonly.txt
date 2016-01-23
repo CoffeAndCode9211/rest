@@ -1,0 +1,11 @@
+Project Url : http://localhost:8080/webservice/
+Description: 
+	This Project contains 
+	JAAS Login Authentication 
+	RESTful API implementation 
+	Hibernate
+	Jasper Report
+	Free Marker Using RESTful API
+	Mail Implementation
+	QuartzCdi Example // just uncomment @Startup @Singleton in com.webservice.trigger
+	javax Trigger // just uncomment @Startup @Singleton in com.webservice.trigger

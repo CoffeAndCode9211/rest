@@ -85,6 +85,7 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 			final Context context = new InitialContext(jndiProperties);
 			EmployeeEJBIf lif = (EmployeeEJBIf) context.lookup("java:global/webservice/EmployeeEJBImpl!com.webservice.service.EmployeeEJBIf");
 			password=hashPassword(password);
+			System.out.println("password:"+password);
 			result = lif.checkLogin(username, password);
 		}catch(Exception e){
 			e.printStackTrace();
