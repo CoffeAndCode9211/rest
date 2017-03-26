@@ -3,6 +3,8 @@ package com.webservice.service;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Resource;
+import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,6 +29,9 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 
 	@PersistenceContext(unitName = "webUnit" )
 	private EntityManager em;
+	
+	@Resource
+	private SessionContext sctx;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EmployeeEJBImpl.class);
@@ -49,6 +54,7 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 
 	public List<Employee> getEmployeesByFilter(Employee employee)
 			throws Exception {
+		System.out.println("Session Id: "+sctx.getCallerPrincipal().getName());
 		StringBuilder query = new StringBuilder();
 		query.append("from Employee e where 1=1 ");
 		if(!isNullOrEmpty(employee.getEmail())){

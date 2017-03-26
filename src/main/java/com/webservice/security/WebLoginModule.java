@@ -5,6 +5,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.security.acl.Group;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Hashtable;
 
 import javax.naming.Context;
@@ -51,11 +53,26 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 			//Do nothing
 		}
 		
+//		try {
+//			
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//	        Date date1 = sdf.parse("2017-03-10 21:44:00");
+//	        Date date2 = new Date();
+//	        if(date2.after(date1)){
+//	        	System.out.println("Return.....");
+//	        	return true;
+//	        }
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//        
+		
 		  if(p instanceof SecurityPrincipal) {					  
 			 
 			  try {
 				  sp = (SecurityPrincipal)p;
-				  sp.setUsername(p.getName());
+				  sp.setUsername(new Date().toString());
 				  sp.setPassword(password);				
 				  sp.setSubj(sub);	
 				  sp.setColRole(null);
