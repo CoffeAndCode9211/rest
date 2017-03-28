@@ -5,7 +5,6 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.security.acl.Group;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
 
@@ -26,68 +25,36 @@ import com.webservice.service.EmployeeEJBIf;
  */
 public class WebLoginModule extends UsernamePasswordLoginModule{
 
-	private SecurityPrincipal sp = null;
-	 Subject sub ;
-	
-	public boolean logout() throws LoginException
-	{
-		sub.getPrincipals().remove(sp);
-		System.out.println("Logging out");
-		return super.logout();
-	}
-	
+	private SecurityPrincipal securityPrincipal = null;
 	
 	@Override
 	protected boolean validatePassword(String username, String password)
 	{
 		boolean status = false;	
 		Principal p = this.getIdentity();
-		sub = new Subject();
-		
-		System.out.println("password(as param) : "+password);
+		Subject sub = new Subject();
+
 		if(password==null){
-			System.out.println("password empty");
 			password = username;
 			username = p.getName();
-		}else{
-			//Do nothing
 		}
-		
-//		try {
-//			
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//	        Date date1 = sdf.parse("2017-03-10 21:44:00");
-//	        Date date2 = new Date();
-//	        if(date2.after(date1)){
-//	        	System.out.println("Return.....");
-//	        	return true;
-//	        }
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		
-//        
-		
-		  if(p instanceof SecurityPrincipal) {					  
-			 
-			  try {
-				  sp = (SecurityPrincipal)p;
-				  sp.setUsername(new Date().toString());
-				  sp.setPassword(password);				
-				  sp.setSubj(sub);	
-				  sp.setColRole(null);
-				  System.out.println("username: "+username);
-				  status = isValidUser(username, password);
-			  }
-			  catch(Exception e) {
-				  e.printStackTrace();
-				  		  
-			  }
-		  }
-		  System.out.println("final Status: "+status);
+		if(p instanceof SecurityPrincipal) {					  
+
+			try {
+				securityPrincipal = (SecurityPrincipal)p;
+				securityPrincipal.setUsername(new Date().toString());
+				securityPrincipal.setPassword(password);				
+				securityPrincipal.setSubj(sub);	
+				securityPrincipal.setColRole(null);
+				status = isValidUser(username, password);
+			}
+			catch(Exception e) {
+				System.out.println("Error: "+e);
+			}
+		}
 		return status;		
 	}
-	
+
 	@Override
 	protected String getUsersPassword() throws LoginException {
 		// TODO Auto-generated method stub
@@ -102,7 +69,6 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 			final Context context = new InitialContext(jndiProperties);
 			EmployeeEJBIf lif = (EmployeeEJBIf) context.lookup("java:global/webservice/EmployeeEJBImpl!com.webservice.service.EmployeeEJBIf");
 			password=hashPassword(password);
-			System.out.println("password:"+password);
 			result = lif.checkLogin(username, password);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -110,16 +76,16 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 		}
 		return result;
 	}
-	
-	
+
+
 	@Override
 	protected Group[] getRoleSets() throws LoginException {
 		try {			
 			Group callerPrincipal = new SimpleGroup("CallerPrincipal");
 			Group roles = new SimpleGroup("Roles");
-	        Group[] groups = {roles,callerPrincipal};	        
-	        roles.addMember(new SecurityPrincipal("SecurityAdmin"));
-	        callerPrincipal.addMember(sp);
+			Group[] groups = {roles,callerPrincipal};	        
+			roles.addMember(new SecurityPrincipal("SecurityAdmin"));
+			callerPrincipal.addMember(securityPrincipal);
 			return groups;
 		}
 		catch(Exception e) {
@@ -128,19 +94,19 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 		}
 
 	}
-	 private String hashPassword(String password) {
-	        String hashword = null;
-	        try {
-	            MessageDigest md5 = MessageDigest.getInstance("MD5");            
-	            md5.update(password.getBytes());
-	            BigInteger hash = new BigInteger(1, md5.digest());
-	            hashword = hash.toString(16);
-	        }catch (Exception e) {
-	            e.printStackTrace();
-	         }	        
-	        return hashword;
+	private String hashPassword(String password) {
+		String hashword = null;
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");            
+			md5.update(password.getBytes());
+			BigInteger hash = new BigInteger(1, md5.digest());
+			hashword = hash.toString(16);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}	        
+		return hashword;
 	}
-	
-	
-	
+
+
+
 }
