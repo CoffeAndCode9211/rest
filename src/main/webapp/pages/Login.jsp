@@ -9,9 +9,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <style type="text/css">
-.mainContainer {
-	background: #f9f9f9;
-}
 
 .fieldContainer {
 	float: none;
@@ -145,11 +142,11 @@ label, input, select, textarea {
 	<form method="POST" action="j_security_check">
 		<div class="fieldContainer">
 			<div class="fieldWrapper">
-				<label>Username</label> <input type="text" name="j_username"
+				<label>Username:</label> <input type="text" name="j_username"
 					id="j_username" />
 			</div>
 			<div>
-				<label>Password</label> <input type="password" name="j_password"
+				<label>Password:</label> <input type="password" name="j_password"
 					id="j_password" />
 				<div class="hide-show">
 					<span class="btnShow show">Show</span>

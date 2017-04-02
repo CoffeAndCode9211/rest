@@ -1,58 +1,90 @@
 <html>
 <head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<style type="text/css">
 
-body{
-  background-color: rgb(207, 203, 210);
+
+<style type="text/css">
+body {
+	background-color: #fff;
+	font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana,
+		"lucida sans unicode", tahoma, sans-serif;
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#page-header {
+    box-sizing: border-box;
+}
+
+#page-header.page-header-border {
+    height: 70px;
+    border-bottom: 1px solid #d0d4d9;
+    padding: 15px 0;
+    background-color: #fff;
+    position: fixed;
+    width : 100%;
+    z-index: 10;
+  
 }
 
 .mainContainer {
-	width: 100%;
-	float: left;
+	width: 70%;
+    margin: 0 auto;
+    padding-top: 75px;
 }
 
-.menuContainer {
-	background-color: #000000;
-	width: 100%;
-	float: left;
-}
-
-.mainContainer ul {
+.menuContainer ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
 
-.mainContainer ul>li {
+.menuContainer ul>li {
 	float: left;
-	margin-left: 15px;
-	position: relative;
-	padding-right: 30px;
+	border: 1px solid #A0D1FA;
+	border-right: none;
 }
 
-.mainContainer ul>li>a {
-	color: #a0a0a0;
-	font-family: Verdana, 'Lucida Grande';
-	font-size: 15px;
-	line-height: 70px;
+.menuContainer{
+    margin: 0 auto 50px;
+    width: 70%;
+}
+
+.menuContainer .tab_rightmost {
+	border-top-right-radius: 5px;
+	border-right: 1px solid #A0D1FA;
+}
+
+.menuContainer .tab_leftmost {
+	border-top-left-radius: 5px;
+}
+
+.menuContainer .tab_selected {
+	border-right: 2px solid #3d464d;
+}
+
+.menuContainer ul>li>a {
+	color: #2895F1;
+	font-size: 13px;
 	text-decoration: none;
+	padding: 11px 22px;
+	display: table-cell;
 }
 
-.mainContainer ul>li>a:hover {
-	color: #ffffff;
+.menuContainer ul>li>a:hover {
+	color: #3d464d;
 }
 
 .mainContainer .srcContainer {
-	width: 100%;
 	float: left;
+    width: 100%;
 }
 
-.mainContainer .logout {
+.menuContainer .logout {
 	float: right;
-	padding-right: 15px;
 }
+
+
 </style>
 <script type="text/javascript">
 	function loadScreen(screenName){
@@ -90,20 +122,45 @@ body{
 
 	}
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ 
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" type="text/css" href="style/jsgrid/jsgrid.css" />
+<link rel="stylesheet" type="text/css" href="style/jsgrid/theme.css" />
+
+<script src="script/spin.min.js"></script>
+<script src="script/jsgrid/jsgrid.core.js"></script>
+<script src="script/jsgrid/jsgrid.load-indicator.js"></script>
+<script src="script/jsgrid/jsgrid.load-strategies.js"></script>
+<script src="script/jsgrid/jsgrid.sort-strategies.js"></script>
+<script src="script/jsgrid/jsgrid.field.js"></script>
+<script src="script/jsgrid/fields/jsgrid.field.text.js"></script>
+<script src="script/jsgrid/fields/jsgrid.field.textarea.js"></script>
+<script src="script/jsgrid/fields/jsgrid.field.number.js"></script>
+
 </head>
 <body>
-	<div class="mainContainer">
-		<div class="menuContainer">
+
+	<div id="page-header" class="page-header-border">
+		<div class="menuContainer mainmenu">
 			<ul>
-				<li><a href="#" onClick="loadScreen('E')">Employee</a></li>
+				<li class="tab_leftmost"><a href="#" onClick="loadScreen('E')">Employee</a></li>
 				<li><a href="#" onClick="loadScreen('R')">Report</a></li>
 				<li><a href="#" onClick="loadScreen('F')">Free Marker
 						Example</a></li>
-				<li><a href="#" onClick="loadScreen('M')">Send Mail</a></li>
-				<li class='logout'><a href="#" onClick="loadScreen('L')">Logout</a></li>
+				<li class="tab_rightmost"><a href="#" onClick="loadScreen('M')">Send
+						Mail</a></li>
+				<li class='logout tab_rightmost'><a href="#"
+					onClick="loadScreen('L')">Logout</a></li>
 			</ul>
 		</div>
+	</div>
+	<div class="mainContainer">
+		
 		<div class="srcContainer"></div>
 	</div>
+	
 </body>
 </html>

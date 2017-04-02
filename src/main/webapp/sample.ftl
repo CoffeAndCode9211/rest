@@ -1,16 +1,6 @@
 <style type="text/css">
 
-.empContainer {
-	width: 60%;
-	float: left;
-	position: absolute;
-	top: 70;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-	color : rgb(11, 13, 12);
-}
+
 
 .empContainer .header {
 	text-align: left;

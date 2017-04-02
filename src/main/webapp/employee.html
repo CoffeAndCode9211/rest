@@ -1,23 +1,9 @@
 <style type="text/css">
-.empContainer {
-	width: 60%;
-	float: left;
-	position: absolute;
-	top: 70;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	margin: auto;
-}
+
 
 .empContainer .header {
 	text-align: center;
 	padding: 5px;
-}
-
-.empContainer .h2 {
-	font-family: arial, sans-serif;
-	font-size: 22px;
 }
 
 .empContainer .row {
@@ -40,54 +26,15 @@
 	text-align: center;
 }
 
-.empContainer #tblEmpDetail {
-	height: 400px;
-	overflow-y: auto;
-	width: 100%;
-	padding-top: 10px;
+.highlight td {
+	background: #b7d4de !important;
 }
 
-.empContainer #tblEmpDetail table {
-	width: 100%;
-}
-
-.empContainer #tblEmpDetail table tr:hover {
-	background-color: lightblue;
-}
-
-.empContainer #tblEmpDetail .empTableHeader {
-	font-weight: bold;
-}
 </style>
 <script type="text/javascript">
 
 var selectedEmpId = "";
-function searchEmployee(){
-	
-	var url = "rest/employee?";
-	url += $("#employeeForm").serialize();
-	$.ajax({
-		type : "GET",
-		url : url,
-		success : function(data) {
-	        
-			$("#tblEmpDetail").empty();
-			if(data.length > 0){
-				var empTable = "<table><tr  class='empTableHeader'><td>First Name</td><td>Last Name</td><td>Email</td><td>Phone</td></tr>";
-	            for(var i=0; i < data.length; i++){
-	            	empTable += "<tr onclick='setEmployee("+data[i].id+")' ><td>"+data[i].firstName+"</td><td>"+data[i].lastName+"</td><td>"
-	            			+data[i].email+"</td><td>"+data[i].phone+"</td><td style='display : none;' >"+data[i].id+"</td></tr>";
-	            }
-	            $("#tblEmpDetail").append(empTable+"</table>");
-			}else{
-				 $("#tblEmpDetail").append("No data Found");
-			}
-		},
-		error : function(error){
-			alert(error);
-		}
-    });
-}
+
 
 function resetEmployee(){
 	$("#txtEmpFirstName").val("");
@@ -97,6 +44,7 @@ function resetEmployee(){
 	$("#tblEmpDetail").empty();
 	$("#btnSaveEmployee").val("Save");
 	selectedEmpId = "";
+	searchEmployee();
 }
 
 
@@ -154,6 +102,71 @@ function deleteEmployee(){
 	}
 }
 
+
+function searchEmployee(){
+
+	$("#tblEmpGrid").jsGrid({
+        height: "auto",
+        width: "100%",
+        sorting: true,
+        loadIndicationDelay: 1,
+        autoload: true,
+        controller: {
+            loadData: function() {
+                var d = $.Deferred();
+
+            	var url = "rest/employee?";
+				url += $("#employeeForm").serialize();
+				$.ajax({
+					type : "GET",
+					url : url,
+				    dataType: "json"
+                }).done(function(response) {
+                    d.resolve(response);
+                });
+
+                return d.promise();
+            }
+        },
+        fields: [
+            { title: "First Name", name: "firstName", type: "text"},
+            { title: "Last Name", name: "lastName", type: "textarea" },
+            { title: "Email", name: "email", type: "textarea" },
+            { title: "Phone", name: "phone", type: "textarea"},
+        ],
+         rowClick: function(item) {
+
+     	 	var $row = this.rowByItem(item.item);
+        	$("#tblEmpGrid tr").each(function() {
+          
+          	    $this = $(this)
+	            if($this.hasClass("highlight")){
+	            	$this.removeClass("highlight");
+	            }
+        	
+        	});
+          
+          	$row.addClass("highlight");
+			setEmployee(item.item.id);
+        },
+        loadIndicator: function(config) {
+            var container = config.container[0];
+            var spinner = new Spinner();
+
+            return {
+                show: function() {
+                    spinner.spin(container);
+                },
+                hide: function() {
+                    spinner.stop();
+                }
+            };
+        },
+     
+
+    });
+}
+
 searchEmployee();
 
 </script>
@@ -193,6 +206,9 @@ searchEmployee();
 				type="button" value="Delete" onclick="deleteEmployee()"> <input
 				type="button" value="Reset" onclick="resetEmployee()"> 
 		</div>
-		<div id="tblEmpDetail"></div>
+		
+		<div id="tblEmpGrid" style="width : 100%; padding-top: 10px;"></div>
+
+
 	</form>
 </div>
