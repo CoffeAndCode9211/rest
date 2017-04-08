@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript">
+    
+    $(document).ready(function(){
+
+
+    
+    	var poolIt = function () {
+    	    $.ajax({
+    	        type: "GET",
+    	        url: "/app/taskNotification/receive/" + $("#nick").val(),
+    	        dataType: "text",
+    	        success: function (message) {
+    	            // The message is added to the <li/> element when it is received.
+    	            $("ul").append("<li>" + message + "</li>");
+    	            //alert("success");
+    	            poolIt(); // Link to the re-polling when a message is consumed.
+    	        },
+    	        error: function () {
+    	        	//alert("error");
+    	          //  poolIt(); // Start re-polling if an error occurs.
+    	        }
+    	    });
+    	}
+
+    	// When the submit button is clicked;
+    	$("button").click(function () {
+
+    	    if ($(".nick").css("visibility") === "visible") { // If <tr> line is visible;
+    	        $("textarea").prop("disabled", false); // Able to enter data
+    	        $(".nick").css("visibility", "hidden"); // Make <tr> line invisible;
+    	        $("span").html("Chat started..");  // Information message
+
+    	        // Polling operation must be initiated at a time
+    	        poolIt();
+    	    }
+    	    else  // if it is not the first time ;
+    	        $.ajax({
+    	            type: "GET", // HTTP POST request
+    	            url: "rest/taskNotification/send/" + $("#nick").val(),// access to the sendMessage(..) method.
+    	            dataType: "text", // Incoming data type -> text
+    	            data: $("textarea").val(), // Chat message to send
+    	            contentType: "text/plain", // The type of the sent message
+    	            success: function (data) {
+
+    	                $("span").html(data); // It writes [Message is sent..] if successful.
+
+    	                // Blink effect
+    	                $("span").fadeOut('fast', function () {
+    	                    $(this).fadeIn('fast');
+    	                });
+    	            }
+    	        });
+    	});
+    
+    });
+    
+    </script>
+</head>
+<body>
+<span></span>
+<table>
+    <tr class="nick">
+        <td>Nick:</td>
+        <td><input id="nick"/></td>
+    </tr>
+    <tr>
+        <td>Message:</td>
+        <td><textarea id="message" disabled="disabled"></textarea></td>
+    </tr>
+</table>
+<button>Post</button>
+<ul></ul>
+</body>
+</html>

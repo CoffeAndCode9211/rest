@@ -1,135 +1,14 @@
 <html>
 <head>
-
-
-<style type="text/css">
-body {
-	background-color: #fff;
-	font-family: "Open Sans", "lucida grande", "Segoe UI", arial, verdana,
-		"lucida sans unicode", tahoma, sans-serif;
-	min-height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-#page-header {
-    box-sizing: border-box;
-}
-
-#page-header.page-header-border {
-    height: 70px;
-    border-bottom: 1px solid #d0d4d9;
-    padding: 15px 0;
-    background-color: #fff;
-    position: fixed;
-    width : 100%;
-    z-index: 10;
-  
-}
-
-.mainContainer {
-	width: 70%;
-    margin: 0 auto;
-    padding-top: 75px;
-}
-
-.menuContainer ul {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-.menuContainer ul>li {
-	float: left;
-	border: 1px solid #A0D1FA;
-	border-right: none;
-}
-
-.menuContainer{
-    margin: 0 auto 50px;
-    width: 70%;
-}
-
-.menuContainer .tab_rightmost {
-	border-top-right-radius: 5px;
-	border-right: 1px solid #A0D1FA;
-}
-
-.menuContainer .tab_leftmost {
-	border-top-left-radius: 5px;
-}
-
-.menuContainer .tab_selected {
-	border-right: 2px solid #3d464d;
-}
-
-.menuContainer ul>li>a {
-	color: #2895F1;
-	font-size: 13px;
-	text-decoration: none;
-	padding: 11px 22px;
-	display: table-cell;
-}
-
-.menuContainer ul>li>a:hover {
-	color: #3d464d;
-}
-
-.mainContainer .srcContainer {
-	float: left;
-    width: 100%;
-}
-
-.menuContainer .logout {
-	float: right;
-}
-
-
-</style>
-<script type="text/javascript">
-	function loadScreen(screenName){
-		if(screenName == "E"){
-			$(".srcContainer").load("employee.html");
-		}else if(screenName == "R"){
-			$(".srcContainer").load("report.html");
-		}else if(screenName == "F"){
-			$(".srcContainer").load("rest/empservlet");
-		}else if(screenName == "M"){
-			$(".srcContainer").load("email.html");
-		}else if(screenName == "L"){
-			$.ajax({
-				type : "PUT",
-				url : 'rest/employee/logout',
-				success : function(data) {
-
-					var baseUrl = document.location.origin;
-					baseUrl += "/webservice";
-					console.log("Output;");  
-					console.log(location.hostname);
-					console.log(document.domain);
-					console.log(window.location.hostname)
-					console.log("document.URL : "+document.URL);
-					console.log("document.location.href : "+document.location.href);
-					console.log("document.location.origin : "+document.location.origin);
-					console.log("document.location.hostname : "+document.location.hostname);
-					console.log("document.location.host : "+document.location.host);
-					console.log("document.location.pathname : "+document.location.pathname);
-					
-					window.location.replace(baseUrl);
-		      	}, error : function(error){ alert(error.Error); }
-			});
-		}
-
-	}
-</script>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
  
 <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,600,400' rel='stylesheet' type='text/css'>
-
 <link rel="stylesheet" type="text/css" href="style/jsgrid/jsgrid.css" />
 <link rel="stylesheet" type="text/css" href="style/jsgrid/theme.css" />
+<link rel="stylesheet" href="style/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="style/toastr.min.css" />
+<link rel="stylesheet" type="text/css" href="style/welcome.css" />
 
+<script src="script/jquery.min.js"></script>
 <script src="script/spin.min.js"></script>
 <script src="script/jsgrid/jsgrid.core.js"></script>
 <script src="script/jsgrid/jsgrid.load-indicator.js"></script>
@@ -139,6 +18,10 @@ body {
 <script src="script/jsgrid/fields/jsgrid.field.text.js"></script>
 <script src="script/jsgrid/fields/jsgrid.field.textarea.js"></script>
 <script src="script/jsgrid/fields/jsgrid.field.number.js"></script>
+<script src="script/toastr.min.js"></script>
+<script type="text/javascript" src="script/jquery-ui-1.10.0.custom.js"></script>
+<script type="text/javascript" src="script/Chart.bundle.js"></script>
+<script src="script/welcome.js"></script>
 
 </head>
 <body>
@@ -146,14 +29,15 @@ body {
 	<div id="page-header" class="page-header-border">
 		<div class="menuContainer mainmenu">
 			<ul>
-				<li class="tab_leftmost"><a href="#" onClick="loadScreen('E')">Employee</a></li>
+				<li class=""><a href="#" onClick="loadScreen('E')">Employee</a></li>
 				<li><a href="#" onClick="loadScreen('R')">Report</a></li>
 				<li><a href="#" onClick="loadScreen('F')">Free Marker
 						Example</a></li>
-				<li class="tab_rightmost"><a href="#" onClick="loadScreen('M')">Send
+				<li><a href="#" onClick="loadScreen('FB')">Fitbit</a></li>
+				<li ><a href="#" onClick="loadScreen('M')">Send
 						Mail</a></li>
-				<li class='logout tab_rightmost'><a href="#"
-					onClick="loadScreen('L')">Logout</a></li>
+				<li class='logout'><a href="#"
+					onClick="loadScreen('L')">Log Out</a></li>
 			</ul>
 		</div>
 	</div>

@@ -16,17 +16,20 @@
 			<scope>provided</scope>
 		</dependency>
 
-		
 		<dependency>
-			<groupId>org.jboss.spec.javax.ws.rs</groupId>
-			<artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
-			<version>1.0.1.Final</version>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-oauth2</artifactId>
+			<version>v2-rev95-1.20.0</version>
 		</dependency>
+		
+		
+		
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>
 			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
@@ -37,13 +40,14 @@
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>1.0.0.GA</version>
+			<version>1.1.0.Final</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- logger -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
+			<version>1.7.2</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Inject -->
@@ -51,12 +55,14 @@
 			<groupId>javax.inject</groupId>
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jboss.as</groupId>
 			<artifactId>jboss-as-security</artifactId>
 			<version>7.1.1.Final</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -78,10 +84,12 @@
 		</dependency>
 
 
+		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4</version>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.5.1</version>
+		    <scope>provided</scope>
 		</dependency>
 		
 		<dependency>
@@ -97,6 +105,20 @@
 		we need to provide complete file name including 0.0.1-SNAPSHOT -->
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		
+		<!--
+		<plugins>
+	      <plugin>
+	        <artifactId>maven-war-plugin</artifactId>
+	        <version>3.0.0</version>
+	        <configuration>
+	          <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
+	        </configuration>
+	      </plugin>
+	    </plugins>
+	    
+	    -->
+	    
 	</build>
 
 </project>

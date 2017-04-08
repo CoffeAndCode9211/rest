@@ -1,0 +1,275 @@
+
+
+<style type="text/css">
+.ui-widget {
+    font-size: 1em !important;
+}
+</style>
+
+<script type="text/javascript">
+
+var token_type = "";
+var expires_in = "";
+var access_token = "";
+var access_token = "";
+var globalData;
+var dialogTitle;
+var dialogWidth = 600;
+var accessCode = "";
+
+function loadDataFromFit(code){
+
+	accessCode = code;
+	$.ajax({
+		type: "GET",
+		url: "rest/details?code="+accessCode,
+		success: function(jsonObject)
+		{			
+			$("input[type=button]").attr("disabled", false);
+			$("#btnFitBitContainer").show();
+			$("#msg").html("Authentication Success...");
+			token_type = jsonObject.token_type;
+			expires_in = jsonObject.expires_in;
+			access_token = jsonObject.access_token;
+			access_token = jsonObject.access_token;
+			globalData = jsonObject;
+		}										
+		,
+		error: function (error)
+		{
+			alert("Authentication Failed");
+		} 
+	});		
+}
+
+
+
+$("input[type=button]").attr("disabled", "disabled");
+
+
+$("#btnDialogClose").click(function(e){
+	$('#detailGlobalDialog').dialog('close');
+	
+});
+
+
+$("#btnProfile").click(function(e){
+
+	getProfile();
+
+});
+
+
+$("#btnSleep").click(function(e){
+
+	getSleep();
+	return;
+	$( "#detailGlobalDialogContent" ).load("usersleep.html" , function() {
+
+		$( "#detailGlobalDialog" ).dialog({
+	      autoOpen: true,
+	      height: 400,
+	      width: 350,
+	      modal: true,
+	      resizable: false,
+	    });
+
+	});
+
+});
+
+
+function getProfile(){	
+	if(globalData == null ){
+		return;
+	}
+	var authCode = token_type+" "+access_token;
+	$.ajax({
+		  url: "https://api.fitbit.com/1/user/-/profile.json",
+		  type: "GET",
+		  beforeSend: function( xhr ) {
+		    xhr.setRequestHeader ( "Authorization", authCode );
+		  },
+		  success: function(jsonObject)
+		  {			
+				resetDialog();
+				if(jsonObject != null && jsonObject != "" && jsonObject.user != null){
+					
+					var obj = jsonObject.user;
+					var data = "<table>";
+					data += "<tr> <td>Name: </td> <td>"+obj.fullName+" </td> </tr>";
+					data += "<tr> <td>DOB: </td> <td>"+obj.dateOfBirth+" </td> </tr>";
+					data += "<tr> <td>Display Name: </td> <td>"+obj.displayName+" </td> </tr>";
+					data += "<tr> <td>Country: </td> <td>"+( obj.country == null ? "" : obj.country )+" </td> </tr>";
+					data += "<tr> <td>Gender: </td> <td>"+obj.gender+" </td> </tr>";
+					data += "<tr> <td>Height: </td> <td>"+obj.height+" </td> </tr>";
+					data += "<tr> <td>Member Since: </td> <td>"+obj.memberSince+" </td> </tr>";
+					data += "<tr> <td>Weight: </td> <td>"+obj.weight+" </td> </tr>";
+					data += "<tr> <td>Stride Length Running: </td> <td>"+obj.strideLengthRunning+" </td> </tr>";
+					data += "<tr> <td>Stride Length Walking: </td> <td>"+obj.strideLengthWalking+" </td> </tr>";
+					data += "</table>";
+					$("#detailGlobalDialogContent").html(data);
+					dialogTitle = "Profile Details"
+					dialogWidth = 500;
+					loadDialog();
+				}else{
+					alert("Someting went wrong");
+				}
+		  }										
+		  ,
+		  error: function (error)
+		  {
+				alert("Error");
+		  } 
+	});
+}	
+
+
+
+
+
+
+
+function resetDialog(){
+	$("#detailGlobalDialogContent").empty();
+	dialogTitle = "";
+	dialogWidth = 600;
+}
+function getSleep(){	
+	var authCode = token_type+" "+access_token;
+	$.ajax({
+		  url: "https://api.fitbit.com/1/user/-/sleep/date/2015-10-09.json",
+		  type: "GET",
+		  beforeSend: function( xhr ) {
+		    xhr.setRequestHeader ( "Authorization", authCode );
+		  },
+		  success: function(jsonObject)
+		  {			
+				resetDialog();
+				if(jsonObject != null && jsonObject != "" && jsonObject.summary != null){
+					var sleepDetail = jsonObject.sleep;
+					var obj = jsonObject.summary;
+					var data = "<table>";
+					
+					var sleepRec = "<table style='width : 100%;'>";
+					sleepRec += "<tr> <td> Date Of Sleep </td> <td> Awakenings Count </td> <td> Efficiency </td> <td> Duration </td>  ";
+					for(var i=0; i < sleepDetail.length; i++){
+						sleepRec += "<tr> <td> "+sleepDetail[i].dateOfSleep+" </td> <td> "+sleepDetail[i].awakeningsCount+" </td> <td> "+sleepDetail[i].efficiency+" </td> <td> "+sleepDetail[i].duration+" </td>  ";		
+					 	
+					}
+					data += "<tr> <td colspan='2' > "+sleepRec+"</tr>";
+					sleepRec += "</table>";
+					data += "<tr><td>&nbsp;&nbsp;&nbsp;</td> </tr>";
+					data += "<tr> <td>Total Asleep Time: </td> <td>"+obj.totalMinutesAsleep+" Min </td> </tr>";
+					data += "<tr> <td>Total Sleep Records: </td> <td>"+obj.totalSleepRecords+" </td> </tr>";
+					data += "<tr> <td>Total Time In Bed: </td> <td>"+obj.totalTimeInBed+" Min </td> </tr>";
+					data += "</table>";
+					$("#detailGlobalDialogContent").html(data);
+					dialogTitle = "User's Sleep Detail for 09-Oct-2015"
+					dialogWidth = 600;
+					loadDialog();
+				}else{
+					alert("Someting went wrong");
+				}
+		  }										
+		  ,
+		  error: function (error)
+		  {
+				alert("Error");
+		  } 
+	});
+}	
+
+function getHeartRate(){	
+	var authCode = token_type+" "+access_token;
+	$.ajax({
+		  url: "https://api.fitbit.com/1/user/-/activities/heart/date/2015-10-11/7d.json",
+		  type: "GET",
+		  beforeSend: function( xhr ) {
+		    xhr.setRequestHeader ( "Authorization", authCode );
+		  },
+		  success: function(jsonObject)
+		  {		
+				resetDialog();
+				if(jsonObject != null && jsonObject != "" && jsonObject['activities-heart'] != null){
+					
+					var obj = jsonObject['activities-heart'];
+					var data = "<table  border='1' style='width : 100%;' >";
+					for(var i=0; i <obj.length; i++ ){
+						var eachRow = obj[i];
+						if(i == 0){
+							data += "<tr> <td>Date</td> <td> <table style='width : 100%;' > <tr> <td style='width : 20%;'  >Minutes</td> <td style='width : 20%;'  >Calories Out</td><td style='width : 20%;'  >Minimum</td> <td style='width : 20%;' >Maximum</td> <td style='width : 20%;'  >Status</td></tr> </table> </td> </tr>";
+						}
+						var heartDetail = "<table style='width : 100%;'>";
+						for(var j=0; j < eachRow.value.heartRateZones.length; j++ ){
+							var heartData = eachRow.value.heartRateZones[j];
+							heartDetail += "<tr> <td style='width : 20%;' >"+heartData.minutes+"</td> <td style='width : 20%;'  >"+heartData.caloriesOut+"</td> <td style='width : 20%;'  >"+heartData.min+"</td> <td style='width : 20%;'  >"+heartData.max+"</td> <td style='width : 20%;'  >"+heartData.name+"</td> </tr>";
+						}
+						heartDetail += "</table>";
+						
+						
+						data += "<tr> <td>"+eachRow.dateTime+"</td> <td>"+heartDetail+"</td> </tr>";
+						
+					}
+					data += "</table>";
+					$("#detailGlobalDialogContent").html(data);
+					dialogTitle = "User's Heart Rate Detail for Last 7 Days"
+					dialogWidth = 800;
+					loadDialog();
+				}else{
+					alert("Someting went wrong");
+				}
+		  }										
+		  ,
+		  error: function (error)
+		  {
+				alert("Error");
+		  } 
+	});
+}
+
+function loadDialog(){
+	$('#detailGlobalDialog').dialog({
+		title : dialogTitle,
+		resizable: false,
+		width: dialogWidth,
+		overflow:"auto",
+		modal : true,
+		close: function( event, ui ) {
+			$(this).dialog('destroy');
+		},
+		open : function( event, ui ) {
+		}
+	});
+}
+
+
+function logout(){
+	var url = "https://www.fitbit.com/logout";
+	var win = window.open(url,"Fitbit", "width=500,height=600,left=400,top=200");
+	setTimeout(function(){ 
+		win.window.close(); 
+		toastr.info('Logged Out Successfully');
+		location.reload();
+
+	}, 3000);
+	
+}
+	
+</script>
+
+<div id="msg" style="   word-wrap: break-word;" >Please Wait... Authentication with Fitbit server is in progress. </div>
+<div id="btnFitBitContainer" style="display:none;" >
+	<input type="button" value="Profile"  id="btnProfile" ></input>
+	<input type="button" value="Sleep" id="btnSleep"  >
+	<input type="button" value="Heart Rate" onClick="getHeartRate()" >
+	<input type="button" value="Logout" onClick="logout()" >
+</div>
+
+
+<div id="detailGlobalDialog" class="receipt" style="display:none; width:100%; padding : 5px; ">
+	<div id="detailGlobalDialogContent" style="max-height : 500px; overflow : auto; " ></div>
+	<div style="float : right; padding : 15px;"  ><input type="button" value="Close" id="btnDialogClose" ></div>
+</div>
+
+
