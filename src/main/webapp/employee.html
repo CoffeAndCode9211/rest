@@ -148,20 +148,7 @@ function searchEmployee(){
           
           	$row.addClass("highlight");
 			setEmployee(item.item.id);
-        },
-        loadIndicator: function(config) {
-            var container = config.container[0];
-            var spinner = new Spinner();
-
-            return {
-                show: function() {
-                    spinner.spin(container);
-                },
-                hide: function() {
-                    spinner.stop();
-                }
-            };
-        },
+        }
      
 
     });

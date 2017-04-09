@@ -10,6 +10,8 @@
 		}else if(screenName == "FB"){
 			setAction();
 			$(".srcContainer").load("details.html");
+		}else if(screenName == "C"){
+			$(".srcContainer").load("userchat.html");
 		}else if(screenName == "M"){
 			$(".srcContainer").load("email.html");
 		}else if(screenName == "L"){
@@ -73,3 +75,17 @@
 	  "showMethod": "fadeIn",
 	  "hideMethod": "fadeOut"
 	}
+
+	/*
+
+	$( document ).ajaxSend(function( event, jqXHR) {
+      $.blockUI({ message: "Please Wait..." }); 
+	});
+	$(document).ajaxComplete(function(){
+		if($.active==2) {
+			$.unblockUI();
+		}
+	});
+
+*/
+

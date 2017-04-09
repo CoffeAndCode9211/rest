@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript">
+    
+    $(document).ready(function(){
+
+    	var myFunction = function() {
+		  alert('Click function');
+		};
+    	
+    	function registerpooling() {
+    		$.ajax({
+    			type: "GET",
+    			url: "rest/registerpooling/add/"+$("#loggedInUser").val(),
+    			dataType: "text",
+    			success: function (jsonObject) {
+    				registerpooling();
+    				$("#msgReceived").append("<br>"+jsonObject);
+    				
+    					var options = {
+    					    title: "Notification",
+    					    options: {
+    					      body: jsonObject,
+    					     // icon: "icon.png",
+    					      lang: 'en-US',
+    					      //onClose: myFunction
+    					    }
+    					};
+
+    					$("#easyNotify").easyNotify(options);
+    					
+    			},
+    			error: function ( error) {
+    				console.log("notification error " + error);
+    			}
+    		});
+        }
+    	
+
+    	// When the submit button is clicked;
+    	$("#SendMsg").click(function () {
+    	    var url = "rest/broadcast/"+$("#loggedInUser").val();
+    	    url += "?message="+$("#message").val();
+    	    url += "&tousername="+$("#txtToUser").val();
+    		
+   	    	$.ajax({
+   				type: "GET",
+   				url: url,
+   				contentType: "text/plain",
+   				success: function (data) {
+   					 $("#msgReceived").html(data); 
+   				}
+   			});		
+    	    	
+    	    
+    	});
+    	
+    	$("#Register").click(function () {
+    		registerpooling();
+    		$("#Register").hide();
+    	});
+    	
+    
+    });
+    
+    </script>
+</head>
+<body>
+<span></span>
+<table>
+    <tr>
+        <td>Logged In User Name:</td>
+        <td><input id="loggedInUser" /></td>
+    </tr>
+    <tr >
+        <td>Send Message To:</td>
+        <td><input id="txtToUser"/></td>
+    </tr>
+    <tr>
+        <td>Message:</td>
+        <td><textarea id="message" ></textarea></td>
+    </tr>
+    <tr>
+        <td>Data:</td>
+        <td><span id="msgReceived"></span></td>
+    </tr>
+</table>
+<button id="Register">Register</button>
+<button id="SendMsg">Post</button>
+<div id="easyNotify" >
+    
+</div>
+<ul></ul>
+</body>
+</html>
