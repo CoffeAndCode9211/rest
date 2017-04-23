@@ -32,7 +32,7 @@
 	</servlet-mapping>
 
 	<welcome-file-list>
-		<welcome-file>welcome.html</welcome-file>
+		<welcome-file>/pages/welcome.html</welcome-file>
 	</welcome-file-list>
 
 	<!-- FreeMarker settings: -->

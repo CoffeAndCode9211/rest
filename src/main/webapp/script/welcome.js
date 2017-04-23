@@ -1,6 +1,38 @@
+	
+	$(document).ready(function(e){
+
+		$("#linkDashboard").click(function(){
+			loadScreen("D");
+		});
+
+		$("#linkEmployee").click(function(){
+			loadScreen("E");
+		});
+
+		$("#linkFreeMarker").click(function(){
+			loadScreen("F");
+		});
+
+		$("#linkReport").click(function(){
+			loadScreen("R");
+		});
+
+		$("#linkFitbit").click(function(){
+			loadScreen("FB");
+		});
+
+		$("#linkSendMail").click(function(){
+			loadScreen("M");
+		});
+
+
+
+	});
+	
+
 
 	function loadScreen(screenName){
-		console.log(screenName);
+		$(".srcContainer").empty();
 		if(screenName == "E"){
 			$(".srcContainer").load("employee.html");
 		}else if(screenName == "R"){
@@ -22,18 +54,6 @@
 
 					var baseUrl = document.location.origin;
 					baseUrl += "/webservice";
-					/*
-					console.log("Output;");  
-					console.log(location.hostname);
-					console.log(document.domain);
-					console.log(window.location.hostname)
-					console.log("document.URL : "+document.URL);
-					console.log("document.location.href : "+document.location.href);
-					console.log("document.location.origin : "+document.location.origin);
-					console.log("document.location.hostname : "+document.location.hostname);
-					console.log("document.location.host : "+document.location.host);
-					console.log("document.location.pathname : "+document.location.pathname);
-					*/
 					window.location.replace(baseUrl);
 		      	}, error : function(error){ alert(error.Error); }
 			});
@@ -75,17 +95,4 @@
 	  "showMethod": "fadeIn",
 	  "hideMethod": "fadeOut"
 	}
-
-	/*
-
-	$( document ).ajaxSend(function( event, jqXHR) {
-      $.blockUI({ message: "Please Wait..." }); 
-	});
-	$(document).ajaxComplete(function(){
-		if($.active==2) {
-			$.unblockUI();
-		}
-	});
-
-*/
 
