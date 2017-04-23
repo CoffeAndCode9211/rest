@@ -1,3 +1,15 @@
 .nomargin{
 	margin:0;
 }
+
+table.dataTable td.sorting_1{
+	background: none !important;
+}
+
+.page-container-bg-solid .theme-panel, .page-content-white .theme-panel{
+	margin-top: 7px;
+}
+
+div.DTS div.dataTables_scrollBody{
+	background: none;
+}

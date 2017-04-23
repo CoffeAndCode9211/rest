@@ -22,7 +22,7 @@ function loadDataFromFit(code){
 	accessCode = code;
 	$.ajax({
 		type: "GET",
-		url: "rest/details?code="+accessCode,
+		url: "../rest/details?code="+accessCode,
 		success: function(jsonObject)
 		{			
 			$("input[type=button]").attr("disabled", false);

@@ -75,7 +75,7 @@ public class EmpServletImpl implements EmpServletIf{
 				}
 			}
 			request.setAttribute("employee", lstEmpTo);
-			request.getRequestDispatcher("/sample.ftl").forward(request, response);
+			request.getRequestDispatcher("../pages/sample.ftl").forward(request, response);
 
 		} catch (ServletException e) {
 			e.printStackTrace();

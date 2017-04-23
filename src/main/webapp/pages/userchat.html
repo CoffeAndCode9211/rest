@@ -12,7 +12,7 @@
     	function registerpooling() {
     		$.ajax({
     			type: "GET",
-    			url: "rest/registerpooling/add/"+$("#loggedInUser").val(),
+    			url: "../rest/registerpooling/add/"+$("#loggedInUser").val(),
     			dataType: "text",
     			success: function (jsonObject) {
     				registerpooling();
@@ -40,7 +40,7 @@
 
     	// When the submit button is clicked;
     	$("#SendMsg").click(function () {
-    	    var url = "rest/broadcast/"+$("#loggedInUser").val();
+    	    var url = "../rest/broadcast/"+$("#loggedInUser").val();
     	    url += "?message="+$("#message").val();
     	    url += "&tousername="+$("#txtToUser").val();
     		

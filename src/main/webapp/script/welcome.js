@@ -25,7 +25,9 @@
 			loadScreen("M");
 		});
 
-
+		$("#linkLogout").click(function(){
+			loadScreen("L");
+		});
 
 	});
 	
@@ -38,7 +40,7 @@
 		}else if(screenName == "R"){
 			$(".srcContainer").load("report.html");
 		}else if(screenName == "F"){
-			$(".srcContainer").load("rest/empservlet");
+			$(".srcContainer").load("../rest/empservlet");
 		}else if(screenName == "FB"){
 			setAction();
 			$(".srcContainer").load("details.html");
@@ -49,7 +51,7 @@
 		}else if(screenName == "L"){
 			$.ajax({
 				type : "PUT",
-				url : 'rest/employee/logout',
+				url : '../rest/employee/logout',
 				success : function(data) {
 
 					var baseUrl = document.location.origin;
@@ -64,7 +66,7 @@
 	function setAction(){	
 		$.ajax({
 			type: "GET",
-			url: "rest/send",
+			url: "../rest/send",
 			success: function(jsonObject)
 			{		
 				window.open(jsonObject,"Fitbit", "width=500,height=600,left=400,top=200");
