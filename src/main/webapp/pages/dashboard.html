@@ -1,0 +1,117 @@
+<script type="text/javascript">
+
+    function loadChart(values){
+
+       $('#highchart_1').highcharts({
+            chart : {
+                style: {
+                    fontFamily: 'Open Sans'
+                }
+            },
+            title: {
+                text: 'Bike Expense',
+                x: -20 //center
+            },
+            /*
+            subtitle: {
+                text: 'Source: WorldClimate.com',
+                x: -20
+            },
+            */
+            xAxis: {
+                type: 'datetime',
+                dateTimeLabelFormats: { // don't display the dummy year
+                    month: '%m',
+                    year: '%Y'
+                },
+                title: {
+                    text: 'Date'
+                }
+            },
+            yAxis: {
+                type : 'linear',
+                title: {
+                    text: 'Price(Rs.)'
+                },
+                /*
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+                */
+            },
+            tooltip: {
+               // valueSuffix: '°C'
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: 'Bike',
+                data: values
+            }]
+        });
+
+
+    }
+
+function getExpense(){
+    $.ajax({
+        type : "GET",
+        url : '../rest/bikeexpense',
+        success : function(data) {
+             if(data != null && data.length > 0){
+                var chartArray = [];
+                var maxLength = data.length;
+                for(var i=0; i< maxLength; i++){
+                    var eachRow = data[i];
+                    var date = eachRow.eventDate;
+                    var amount = eachRow.amount;
+
+                   var dateObject = $.datepicker.parseDate('d-M-yy', date);
+                   var arry = [dateObject.getTime(), parseFloat(amount)];
+                    chartArray.push(arry);
+
+                }
+                loadChart(chartArray);
+             }
+
+        }, error : function(error){ alert(error.Error); }
+    });
+}
+
+getExpense();
+
+</script>
+<div class="dashboardContainer">
+   <div class="row">
+        <div class="col-md-12">
+            <div class="portlet light portlet-fit bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class=" icon-layers font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Line Chart 1</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="highchart_1" style="height:500px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

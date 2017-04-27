@@ -35,7 +35,9 @@
 
 	function loadScreen(screenName){
 		$(".srcContainer").empty();
-		if(screenName == "E"){
+		if(screenName == "D"){
+			$(".srcContainer").load("dashboard.html");
+		}else if(screenName == "E"){
 			$(".srcContainer").load("employee.html");
 		}else if(screenName == "R"){
 			$(".srcContainer").load("report.html");
