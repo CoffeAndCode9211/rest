@@ -2,7 +2,7 @@ package com.webservice.security;
 
 import java.io.Serializable;
 import java.security.Principal;
-import java.util.Collection;
+import java.util.List;
 
 import javax.security.auth.Subject;
 
@@ -16,15 +16,15 @@ public class SecurityPrincipal implements Principal,Serializable{
 	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
-	private Collection<Role> colRole;
+	private List<Role> lstRole;
 	private Subject subj;	
 	public SecurityPrincipal(String name) {
 		this.username = name;
 	}
-	public SecurityPrincipal(String name, String verifyCode, Collection<Role> colRole) {
+	public SecurityPrincipal(String name, String verifyCode, List<Role> lstRole) {
 		this.username = name;
 		this.password = verifyCode;
-		this.colRole = colRole;
+		this.lstRole = lstRole;
 	}
 
 
@@ -43,11 +43,12 @@ public class SecurityPrincipal implements Principal,Serializable{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public Collection<Role> getColRole() {
-		return colRole;
+	
+	public List<Role> getLstRole() {
+		return lstRole;
 	}
-	public void setColRole(Collection<Role> colRole) {
-		this.colRole = colRole;
+	public void setLstRole(List<Role> lstRole) {
+		this.lstRole = lstRole;
 	}
 	public Subject getSubj() {
 		return subj;

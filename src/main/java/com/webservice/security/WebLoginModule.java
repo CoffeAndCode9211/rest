@@ -5,8 +5,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.Principal;
 import java.security.acl.Group;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -45,7 +47,7 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 				securityPrincipal.setUsername(new Date().toString());
 				securityPrincipal.setPassword(password);				
 				securityPrincipal.setSubj(sub);	
-				securityPrincipal.setColRole(null);
+				securityPrincipal.setLstRole(null);
 				status = isValidUser(username, password);
 			}
 			catch(Exception e) {
@@ -57,7 +59,6 @@ public class WebLoginModule extends UsernamePasswordLoginModule{
 
 	@Override
 	protected String getUsersPassword() throws LoginException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
