@@ -1,0 +1,13 @@
+<script type="text/javascript">
+function getParameterByName(name) {
+	// Retrieves the value of a given query string parameter
+	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"), results = regex
+			.exec(location.search);
+	return results == null ? "" : decodeURIComponent(results[1].replace(
+			/\+/g, " "));
+}
+var code = getParameterByName("code");
+window.opener.authSuccessWithCode(code);
+window.close();	
+</script>

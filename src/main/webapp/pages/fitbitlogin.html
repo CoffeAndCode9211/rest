@@ -1,0 +1,458 @@
+<script type="text/javascript">
+var fitbitAuthWindow;
+
+function setAction(){	
+	$.ajax({
+			type: "GET",
+			url: "../rest/fitbitlogin",
+			success: function(jsonObject)
+			{			
+				 window.open(jsonObject, "_blank", "height=400, width=550, left=400, top=200, status=yes, toolbar=no, menubar=no, location=no,addressbar=no"); 
+			},
+			error: function (error)
+			{
+				alert("Error");
+			} 
+	});				
+}		
+
+var token_type = "";
+var expires_in = "";
+var access_token = "";
+var globalData;
+var dialogTitle;
+var dialogWidth = 600;
+var loggedInUser = "";
+
+	function authSuccessWithCode(code){
+		$.ajax({
+			type: "GET",
+			url: "../rest/fitbitdetails?code="+code,
+			success: function(jsonObject)
+			{			
+				
+				token_type = jsonObject.token_type;
+				expires_in = jsonObject.expires_in;
+				access_token = jsonObject.access_token;
+				globalData = jsonObject;
+				
+				fitbitAccessCode = token_type+" "+access_token;
+				getProfile();
+			}										
+			,
+			error: function (error)
+			{
+				alert("Authentication Failed....");
+			} 
+		});		
+		
+	}
+	
+	
+	$("#btnDateOk").click(function(){
+		showSleepTime();
+	});
+		
+	
+	function getProfile(){	
+		if(globalData == null ){
+			return;
+		}
+		var authCode = token_type+" "+access_token;
+		$.ajax({
+			  url: "https://api.fitbit.com/1/user/-/profile.json",
+			  type: "GET",
+			  beforeSend: function( xhr ) {
+			    xhr.setRequestHeader ( "Authorization", fitbitAccessCode );
+			  },
+			  success: function(jsonObject)
+			  {			
+					resetFitBitContainers();
+					if(jsonObject != null && jsonObject != "" && jsonObject.user != null){
+						var obj = jsonObject.user;
+						$("#fitProfName").text(isNullOrBlank(obj.fullName));
+						$("#fitProfDob").text(isNullOrBlank(obj.dateOfBirth));
+						$("#fitProfDisName").text(isNullOrBlank(obj.displayName));
+						$("#fitProfCountry").text(isNullOrBlank(obj.country));
+						$("#fitProfGender").text(isNullOrBlank(obj.gender));
+						$("#fitProfheight").text(isNullOrBlank(obj.height));
+						$("#fitProfMenSince").text(isNullOrBlank(obj.memberSince));
+						$("#fitProfWeight").text(isNullOrBlank(obj.weight));
+						$("#fitProfAvgDailySteps").text(isNullOrBlank(obj.averageDailySteps));
+						$("#fitProfDayOfWeek").text(isNullOrBlank(obj.startDayOfWeek));
+						$("#fitProfDisUnit").text(isNullOrBlank(obj.distanceUnit));
+						$("#fitProfTimezone").text(isNullOrBlank(obj.timezone));
+						$("#fitProfLengthRunning").text(isNullOrBlank(obj.strideLengthRunning));
+						$("#fitProfLengthWalking").text(isNullOrBlank(obj.strideLengthWalking));
+						$("#fitbitProfileContainer").removeClass("hide");
+						$("#fitbitTitle").html("Fitbit Dashboard - Profile");
+					}else{
+						alert("Someting went wrong");
+					}
+			  }										
+			  ,
+			  error: function (error)
+			  {
+					alert("Error");
+			  } 
+		});
+	}	
+	
+	function isNullOrBlank(val){
+		if(val == null || val == ""){
+			return "";
+		}else{
+			return val;
+		}
+	
+	}
+	function getUrlDate(uiDate){
+		var dateObj = $.datepicker.parseDate( "dd-M-yy", uiDate);
+		return $.datepicker.formatDate('yy-mm-dd', dateObj);
+	}
+	
+	function showSleepTime(){
+		var authCode = token_type+" "+access_token;
+		var ToDate = getUrlDate($("#txtFromDate").val());
+		$.ajax({
+			  url: "https://api.fitbit.com/1/user/-/sleep/date/"+ToDate+".json",
+			  type: "GET",
+			  beforeSend: function( xhr ) {
+			    xhr.setRequestHeader ( "Authorization", fitbitAccessCode );
+			  },
+			  success: function(jsonObject)
+			  {			
+					
+					if(jsonObject != null && jsonObject != "" 
+							&& jsonObject.summary != null && jsonObject.sleep != null && jsonObject.sleep.length > 0){
+							
+						var sleepDetail = jsonObject.sleep;
+						var obj = jsonObject.summary;
+						var data = "<table class='table table-bordered table-hover'>";
+						
+						var sleepRec = "<table  class='table table-bordered table-hover' >";
+						sleepRec += "<tr> <td> Date&nbsp;Of&nbsp;Sleep </td> <td> Start&nbsp;Time</td>  <td> Awakenings&nbsp;Count </td> <td> Efficiency </td> <td> Duration </td>  ";
+						sleepRec += " <td> Awake&nbsp;Count </td> <td> Awake&nbsp;Duration </td> <td> Minutes&nbsp;after&nbsp;Wakeup </td> <td> Minutes&nbsp;Asleep </td>  ";
+						sleepRec += " <td> Minutes&nbsp;Awake </td> <td> Minutes&nbsp;To&nbsp;Fall&nbsp;Asleep </td> <td> Restless&nbsp;Count </td> <td> Restless&nbsp;Duration </td>  ";
+						sleepRec += " <td> Time&nbsp;In&nbsp;Bed </td> <td> Is&nbsp;Main&nbsp;Sleeping</td> </tr> ";
+						
+						for(var i=0; i < sleepDetail.length; i++){
+						
+							var time = sleepDetail[i].startTime.split("T");
+							var startTime = time[1].split(".")[0];
+							var duration = (parseInt(sleepDetail[i].duration) / ( 1000*60*60) ).toFixed(2);
+							sleepRec += "<tr> <td> "+sleepDetail[i].dateOfSleep+" </td> <td> "+startTime+" </td> <td> "+sleepDetail[i].awakeningsCount+" </td> <td> "+sleepDetail[i].efficiency+" </td> <td> "+duration+" Hr </td>  ";		
+							
+							sleepRec += " <td> "+sleepDetail[i].awakeCount+" </td> <td> "+sleepDetail[i].awakeDuration+" </td> <td> "+sleepDetail[i].minutesAfterWakeup+" </td> <td> "+sleepDetail[i].minutesAsleep+" </td>  ";	
+
+							sleepRec += " <td> "+sleepDetail[i].minutesAwake+" </td> <td> "+sleepDetail[i].minutesToFallAsleep+" </td> <td> "+sleepDetail[i].restlessCount+" </td> <td> "+sleepDetail[i].restlessDuration+" </td>  ";	
+							
+							sleepRec += " <td> "+sleepDetail[i].timeInBed+" </td> <td> "+sleepDetail[i].isMainSleep+" </td> </tr>";
+						 	
+						}
+						sleepRec += "</table>";
+						data += "<tr> <td colspan='2' > "+sleepRec+" </td></tr>";
+						data += "<tr><td colspan='2'  >&nbsp;&nbsp;&nbsp;</td> </tr>";
+						data += "<tr><td colspan='2' ><b>Summary</b></td> </tr>";
+						data += "<tr> <td colspan='2' >Total Asleep Time: "+obj.totalMinutesAsleep+" Min </td> </tr>";
+						data += "<tr> <td colspan='2' >Total Sleep Records: "+obj.totalSleepRecords+" </td> </tr>";
+						data += "<tr> <td colspan='2' >Total Time In Bed: "+obj.totalTimeInBed+" Min </td> </tr>";
+						data += "</table>";
+						$("#sleepDetailSubContainer").html(data);
+						
+					}else{
+						alert("Data not recorded for "+ToDate);
+					}
+			  }										
+			  ,
+			  error: function (error)
+			  {
+					alert("Error");
+			  } 
+		});
+	}
+	
+	function resetFitBitContainers(){
+		$("#fitbitProfileContainer").addClass("hide");
+		$("#heartRateContainer").addClass("hide");
+		$("#sleepDetailContainer").addClass("hide");
+		$("#sleepDetailSubContainer").empty();
+		$("#heartRateContainer").empty();
+		$("#fitbitTitle").html("Fitbit Dashboard");
+	}
+	
+	function getSleep(){	
+		resetFitBitContainers();
+		$("#fitbitTitle").html("Fitbit Dashboard - Sleep");
+		$("#sleepDetailContainer").removeClass("hide");
+		$('#txtFromDate').datepicker({
+			orientation: "left",
+			format: "dd-M-yyyy",
+			autoclose: true
+		});
+	}	
+	
+	
+	function getHeartRate(){
+		var authCode = token_type+" "+access_token;
+		$.ajax({
+			  url: "https://api.fitbit.com/1/user/-/activities/heart/date/2017-04-26/7d.json",
+			  type: "GET",
+			  beforeSend: function( xhr ) {
+			    xhr.setRequestHeader ( "Authorization", fitbitAccessCode );
+			  },
+			  success: function(jsonObject)
+			  {		
+					if(jsonObject != null && jsonObject != "" && jsonObject['activities-heart'] != null){
+						resetFitBitContainers();
+						$("#fitbitTitle").html("Fitbit Dashboard - Heart Rate");
+						var obj = jsonObject['activities-heart'];
+						var data = "<table class='table table-bordered table-hover' >";
+						for(var i=0; i <obj.length; i++ ){
+							var eachRow = obj[i];
+							if(i == 0){
+								data += "<thead><tr> <th>Date</th> <th> <table style='width : 100%;' > <tr> <td style='width : 20%;'  >Minutes</td> <td style='width : 20%;'  >Calories Out</td><td style='width : 20%;'  >Minimum</td> <td style='width : 20%;' >Maximum</td> <td style='width : 20%;'  >Status</td></tr> </table> </th> </tr></thead>";
+							}
+							var heartDetail = "<table style='width : 100%;'>";
+							for(var j=0; j < eachRow.value.heartRateZones.length; j++ ){
+								var heartData = eachRow.value.heartRateZones[j];
+								heartDetail += "<tr> <td style='width : 20%;' >"+heartData.minutes+"</td> <td style='width : 20%;'  >"+heartData.caloriesOut+"</td> <td style='width : 20%;'  >"+heartData.min+"</td> <td style='width : 20%;'  >"+heartData.max+"</td> <td style='width : 20%;'  >"+heartData.name+"</td> </tr>";
+							}
+							heartDetail += "</table>";
+							
+							
+							data += "<tr> <td>"+eachRow.dateTime+"</td> <td>"+heartDetail+"</td> </tr>";
+							
+						}
+						data += "</table>";
+						$("#heartRateContainer").html(data);
+						$("#heartRateContainer").removeClass("hide");
+					}else{
+						alert("Someting went wrong");
+					}
+			  }										
+			  ,
+			  error: function (error)
+			  {
+					alert("Error");
+			  } 
+		});
+	}
+	
+	
+	function logout(){
+		var fitbitCLose = window.open("https://www.fitbit.com/logout", "_blank", "height=400, width=550, status=yes, toolbar=no, menubar=no, location=no,addressbar=no"); 
+		setTimeout(function(){ fitbitCLose.close(); }, 5000);
+	}
+	
+	if(fitbitAccessCode == ""){
+		setAction();
+	}else{
+		getProfile();
+	}
+</script>
+
+<form class="form-horizontal" role="form">
+	<div class="form-actions mt-checkbox-inline">
+		<div class="row">
+			<div class="col-md-offset-4 col-md-8">
+				<button type="button" onClick="getProfile()" class="btn btn-primary">Profile</button>
+				<button type="button" onClick="getSleep()" class="btn btn-primary">Sleep</button>
+				<button type="button" onClick="getHeartRate()" class="btn btn-primary">Heart Rate</button>
+				<button type="button" onClick="logout()" class="btn btn-primary">Logout</button>
+			</div>
+		</div>
+	</div>
+</form>
+
+
+<div class="portlet box blue-madison">
+	<div class="portlet-title">
+		<div class="caption" id="fitbitTitle">Fitbit Dashboard</div>
+	</div>
+	<div class="portlet-body">
+		
+		<div class="fitbitContainer">
+			
+			<div id="fitbitProfileContainer" class="hide">
+				<h3 class="form-section">Person Info</h3>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Name:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfName">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Display Name:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfDisName">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">DOB:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfDob">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Gender:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfGender">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Country:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfCountry">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Height:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfheight">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Weight:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfWeight">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Avg Daily Steps:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfAvgDailySteps">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Start Day Of Week:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfDayOfWeek">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Distance Unit:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfDisUnit">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Timezone:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfTimezone">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Stride Length Running:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfLengthRunning">  </p>
+							</div>
+						</div>
+					</div>
+					<!--/span-->
+				</div>
+				
+				<!--/row-->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Member Since:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfMenSince">  </p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+							<label class="control-label col-md-4">Stride Length Walking:</label>
+							<div class="col-md-8">
+								<p class="form-control-static" id="fitProfLengthWalking">  </p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div id="heartRateContainer" class="hide">
+					
+			</div>
+			
+			<div id="sleepDetailContainer" class="hide">
+					
+									
+				<form action="javascript:;" class="form-horizontal">
+					<div class="form-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="control-label col-md-3">Date</label>
+									<div class="col-md-9">
+										<input class="form-control date-picker" id="txtFromDate"  size="16" type="text" value="" />
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<button type="button" id="btnDateOk" class="btn btn-primary">Show Detail</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div id="sleepDetailSubContainer" style=" width: 100%; overflow-x: auto; " >
+					
+				</div>
+					
+			</div>
+			
+		</div>
+	</div>
+</div>

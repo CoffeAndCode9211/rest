@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Response;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeRequestUrl;
@@ -29,14 +30,16 @@ public class CommonImpl implements CommonIf{
 	private static final String FITBIT_AUTHORIZE_TOKEN = "https://api.fitbit.com/oauth2/token";
 	private static final String FITBIT_CLIENT_ID = "228DJ5";
 	private static final String FITBIT_CLIENT_SECRET = "c3c159f4fe751b023649450d6ad76609";
-	private static final String REDIRECTING_URL = "http://demo.ashishkumar.tech/webservice/service.html";
-//	private static final String REDIRECTING_URL = "http://localhost:8080/webservice/service.html";
+//	private static final String REDIRECTING_URL = "http://demo.ashishkumar.tech/webservice/pages/fitbitdetails.html";
+	private static String REDIRECTING_URL = "http://localhost:8080/webservice/pages/fitbitdetails.html";
 	private static final String ALL_SCOPE = "weight activity sleep heartrate location nutrition profile settings social";
 
 	Response.ResponseBuilder builder = null;
 
-	public String getAuthURL() {
+	public String getAuthURL(HttpServletRequest req) {
 		String url = "";
+//		REDIRECTING_URL = req.getScheme()+"://"+req.getServerName()+":"+req.getServerPort()+"/webservice/pages/fitbitdetails.html";
+		System.out.println(REDIRECTING_URL);
 		try{
 			Collection<String> scope = new ArrayList<String>();
 			scope.add(ALL_SCOPE);

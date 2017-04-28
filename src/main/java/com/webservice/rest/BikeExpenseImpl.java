@@ -78,14 +78,14 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 		try{
 			logger.info(empTo.toString());
 			validateEmployee(empTo);
-			BikeExpense emp = null;
+			BikeExpense emp = Common.transformToBikeExpense(empTo);
 			Boolean response = bikeExpenseEJBIf.addBikeExpense(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				responseObj.put("Success", "Employee saved successfully");
+				responseObj.put("Success", "Bike Expense saved successfully");
 				return Response.ok().entity(responseObj).build();
 			}else{
-				responseObj.put("Error", "Error while saving Employee");
+				responseObj.put("Error", "Error while saving Bike Expense");
 				return Response.noContent().entity(responseObj).build();
 			}
 
@@ -108,8 +108,7 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 	public Response updateBikeExpense(BikeExpenseTO empTo, int id) {
 		try{
 
-			BikeExpense emp = new BikeExpense();
-			emp.setId(id);
+			BikeExpense emp = Common.transformToBikeExpense(empTo);
 			Boolean response = bikeExpenseEJBIf.updateBikeExpense(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){

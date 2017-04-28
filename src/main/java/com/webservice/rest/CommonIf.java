@@ -1,9 +1,11 @@
 package com.webservice.rest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -11,11 +13,11 @@ import javax.ws.rs.core.Response;
 public interface CommonIf {
 	
 	@GET
-	@Path("/send")
-	public String getAuthURL();
+	@Path("/fitbitlogin")
+	public String getAuthURL(@Context HttpServletRequest req);
 	
 	@GET
-	@Path("/details")
+	@Path("/fitbitdetails")
 	@Produces({MediaType.APPLICATION_JSON})
 	public Response getDetails(@QueryParam(value = "code") String code);
 	

@@ -1,4 +1,6 @@
+	var fitbitAccessCode = "";	
 	
+
 	$(document).ready(function(e){
 
 		$("#linkDashboard").click(function(){
@@ -44,8 +46,7 @@
 		}else if(screenName == "F"){
 			$(".srcContainer").load("../rest/empservlet");
 		}else if(screenName == "FB"){
-			setAction();
-			$(".srcContainer").load("details.html");
+			$(".srcContainer").load("fitbitlogin.html");
 		}else if(screenName == "C"){
 			$(".srcContainer").load("userchat.html");
 		}else if(screenName == "M"){
@@ -65,22 +66,7 @@
 
 	}
 
-	function setAction(){	
-		$.ajax({
-			type: "GET",
-			url: "../rest/send",
-			success: function(jsonObject)
-			{		
-				window.open(jsonObject,"Fitbit", "width=500,height=600,left=400,top=200");
-			}												
-			,
-			error: function (error)
-			{
-				alert("Error");
-			} 
-		});				
-	}	
-
+	
 	
 	toastr.options = {
 	  "closeButton": true,

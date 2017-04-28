@@ -79,6 +79,33 @@ public class Common {
 		return bikeExpenseTO;
 	}
 	
+	public static BikeExpense transformToBikeExpense(BikeExpenseTO bikeExpenseTO) throws ParseException{
+		BikeExpense bikeExpense = new BikeExpense();
+		if(bikeExpenseTO.getAmount() != null){
+			bikeExpense.setAmount(bikeExpenseTO.getAmount());
+		}
+		if(bikeExpenseTO.getEventDate() != null){
+			bikeExpense.setEventDate(Common.convertStringToDate(bikeExpenseTO.getEventDate()));
+		}
+		if(bikeExpenseTO.getMeterReading() != null){
+			bikeExpense.setMeterReading(Integer.parseInt(bikeExpenseTO.getMeterReading()));
+		}
+		if(bikeExpenseTO.getPetrolQty() != null){
+			bikeExpense.setPetrolQty(Double.parseDouble(bikeExpenseTO.getPetrolQty()));
+		}
+		if(bikeExpenseTO.getId() != null){
+			bikeExpense.setId(bikeExpenseTO.getId());
+		}
+		if(bikeExpenseTO.getPricePerLtr() != null){
+			bikeExpense.setPricePerLtr(Double.parseDouble(bikeExpenseTO.getPetrolQty()));
+		}
+		if(bikeExpenseTO.getReason() != null){
+			bikeExpense.setReason(bikeExpenseTO.getReason());
+		}
+		
+		return bikeExpense;
+	}
+	
 	
 	public static Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
 		Map<String, String> responseObj = new HashMap<String, String>();
