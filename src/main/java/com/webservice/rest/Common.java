@@ -97,7 +97,7 @@ public class Common {
 			bikeExpense.setId(bikeExpenseTO.getId());
 		}
 		if(bikeExpenseTO.getPricePerLtr() != null){
-			bikeExpense.setPricePerLtr(Double.parseDouble(bikeExpenseTO.getPetrolQty()));
+			bikeExpense.setPricePerLtr(Double.parseDouble(bikeExpenseTO.getPricePerLtr()));
 		}
 		if(bikeExpenseTO.getReason() != null){
 			bikeExpense.setReason(bikeExpenseTO.getReason());

@@ -30,8 +30,8 @@ public class CommonImpl implements CommonIf{
 	private static final String FITBIT_AUTHORIZE_TOKEN = "https://api.fitbit.com/oauth2/token";
 	private static final String FITBIT_CLIENT_ID = "228DJ5";
 	private static final String FITBIT_CLIENT_SECRET = "c3c159f4fe751b023649450d6ad76609";
-//	private static final String REDIRECTING_URL = "http://demo.ashishkumar.tech/webservice/pages/fitbitdetails.html";
-	private static String REDIRECTING_URL = "http://localhost:8080/webservice/pages/fitbitdetails.html";
+	private static final String REDIRECTING_URL = "http://demo.ashishkumar.tech/webservice/pages/fitbitdetails.html";
+//	private static String REDIRECTING_URL = "http://localhost:8080/webservice/pages/fitbitdetails.html";
 	private static final String ALL_SCOPE = "weight activity sleep heartrate location nutrition profile settings social";
 
 	Response.ResponseBuilder builder = null;
