@@ -110,3 +110,9 @@ body {
 
 }
 
+
+/* loading opacity */
+.blockOverlay{
+	opacity : 0.4 !important;
+}
+

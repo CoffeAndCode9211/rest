@@ -9,13 +9,13 @@
 
 	<dependencies>
 
-		 <dependency>  
-			 <groupId>org.glassfish.jersey.containers</groupId>  
-			 <artifactId>jersey-container-servlet</artifactId>  
-			 <version>2.0</version>  
+		<dependency>
+			<groupId>org.glassfish.jersey.containers</groupId>
+			<artifactId>jersey-container-servlet</artifactId>
+			<version>2.0</version>
 		</dependency>
-		
-		
+
+
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jaxrs</artifactId>
@@ -28,15 +28,15 @@
 			<artifactId>google-api-services-oauth2</artifactId>
 			<version>v2-rev95-1.20.0</version>
 		</dependency>
-		
-		
-		
+
+
+
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.0-api</artifactId>
 			<version>1.0.1.Final</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.jboss.spec.javax.ejb</groupId>
 			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
@@ -57,12 +57,12 @@
 			<version>1.7.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/ch.qos.logback/logback-classic -->
 		<dependency>
-		    <groupId>ch.qos.logback</groupId>
-		    <artifactId>logback-classic</artifactId>
-		    <version>1.1.7</version>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.1.7</version>
 		</dependency>
 
 		<!-- Inject -->
@@ -106,20 +106,20 @@
 
 		<!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>javax.mail-api</artifactId>
-		    <version>1.5.1</version>
-		    <scope>provided</scope>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.5.1</version>
+			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.twilio.sdk</groupId>
 			<artifactId>twilio-java-sdk</artifactId>
 			<version>6.2.0-edge</version>
 		</dependency>
-		
-	  
-		
+
+
+
 
 	</dependencies>
 
@@ -127,20 +127,17 @@
 		we need to provide complete file name including 0.0.1-SNAPSHOT -->
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		
-		<!--
+
 		<plugins>
-	      <plugin>
-	        <artifactId>maven-war-plugin</artifactId>
-	        <version>3.0.0</version>
-	        <configuration>
-	          <packagingExcludes>WEB-INF/lib/*.jar</packagingExcludes>
-	        </configuration>
-	      </plugin>
-	    </plugins>
-	    
-	    -->
-	    
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.0.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

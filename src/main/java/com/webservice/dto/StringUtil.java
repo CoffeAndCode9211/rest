@@ -18,7 +18,6 @@ public final class StringUtil {
 	public static boolean isNullCombo(final String str){
 	   return null == str || str.isEmpty() || "-1".equals(str) || "null".equalsIgnoreCase(str.trim());
 	}
-	
-	
+
 
 }

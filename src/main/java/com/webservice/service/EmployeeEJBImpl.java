@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.webservice.dto.StringUtil;
 import com.webservice.model.Employee;
 import com.webservice.model.Users;
 
@@ -57,22 +58,22 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 		System.out.println("Session Id: "+sctx.getCallerPrincipal().getName());
 		StringBuilder query = new StringBuilder();
 		query.append("from Employee e where 1=1 ");
-		if(!isNullOrEmpty(employee.getEmail())){
+		if(!StringUtil.isNullOrBlank(employee.getEmail())){
 			query.append(" and e.email like '");
 			query.append(employee.getEmail());
 			query.append("%' ");
 		}
-		if(!isNullOrEmpty(employee.getFirstName())){
+		if(!StringUtil.isNullOrBlank(employee.getFirstName())){
 			query.append(" and e.firstName like '");
 			query.append(employee.getFirstName());
 			query.append("%' ");
 		}
-		if(!isNullOrEmpty(employee.getLastName())){
+		if(!StringUtil.isNullOrBlank(employee.getLastName())){
 			query.append(" and e.lastName like '");
 			query.append(employee.getLastName());
 			query.append("%' ");
 		}
-		if(!isNullOrEmpty(employee.getPhone())){
+		if(!StringUtil.isNullOrBlank(employee.getPhone())){
 			query.append(" and e.phone like '");
 			query.append(employee.getPhone());
 			query.append("%' ");
@@ -88,12 +89,7 @@ public class EmployeeEJBImpl implements EmployeeEJBIf {
 	}
 
 	
-	private Boolean isNullOrEmpty(String str){
-		if(str == null || str.isEmpty()){
-			return true;
-		}
-		return false;
-	}
+	
 
 	@SuppressWarnings("unchecked")
 	public Boolean checkLogin(String username, String password) {

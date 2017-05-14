@@ -1,7 +1,29 @@
 	var fitbitAccessCode = "";	
-	
+
+// Configured for UnblockUI
+$.blockUI.defaults.fadeOut = 0; 
+$.blockUI.defaults.fadeIn = 0; 
+$.blockUI.defaults.message="<h4>Loading... </h4>"
+var noOfCalls = 1;	
 
 	$(document).ready(function(e){
+
+
+	 	$( document ).ajaxSend(function() {
+			$.blockUI({ boxed: true});
+		});
+
+		$(document).ajaxComplete(function(){
+			console.log(noOfCalls);
+	      if(noOfCalls > 0){
+				noOfCalls = noOfCalls - 1;
+			}
+			if(noOfCalls == 0) {
+				$.unblockUI();
+			}
+		});
+
+
 
 		$("#linkDashboard").click(function(){
 			loadScreen("D");
@@ -31,11 +53,16 @@
 			loadScreen("L");
 		});
 
+		$("#linkMyTimer").click(function(){
+			loadScreen("MT");
+		});
+
 	});
 	
 
 
 	function loadScreen(screenName){
+		noOfCalls = 1;	
 		$(".srcContainer").empty();
 		if(screenName == "D"){
 			$(".srcContainer").load("dashboard.html");
@@ -51,34 +78,64 @@
 			$(".srcContainer").load("userchat.html");
 		}else if(screenName == "M"){
 			$(".srcContainer").load("email.html");
+		}else if(screenName == "MT"){
+			$(".srcContainer").load("mytimer.html");
 		}else if(screenName == "L"){
-			$.ajax({
-				type : "PUT",
-				url : '../rest/employee/logout',
-				success : function(data) {
-
-					var baseUrl = document.location.origin;
-					baseUrl += "/webservice";
-					window.location.replace(baseUrl);
-		      	}, error : function(error){ alert(error.Error); }
-			});
+			confirmLogout("Are you sure you want to logout? ")
 		}
 
 	}
 
 	
-	
+	function confirmLogout(msg) {
+		bootbox.confirm({
+			message: msg,
+			buttons: {
+				confirm: {
+					label: "OK",
+					className: "btn btn-primary margin-right-10"
+				},
+				cancel: {
+					label: "Cancel",
+					className: "btn-default pull-right"
+				}
+			},
+			callback: function(result) {
+				if(result){
+					$.blockUI();
+					logout();
+				}
+			}
+		});
+	}
+
+	function logout(){
+		
+		$.ajax({
+			type : "PUT",
+			url : '../rest/employee/logout',
+			success : function(data) {
+
+				var baseUrl = document.location.origin;
+				baseUrl += "/webservice";
+				window.location.replace(baseUrl);
+	      	}, error : function(error){ alert(error.Error); }
+		});
+		
+	}
+
+
 	toastr.options = {
 	  "closeButton": true,
 	  "debug": false,
 	  "newestOnTop": false,
 	  "progressBar": false,
-	  "positionClass": "toast-top-right",
+	  "positionClass": "toast-bottom-right",
 	  "preventDuplicates": false,
 	  "onclick": null,
 	  "showDuration": "300",
 	  "hideDuration": "1000",
-	  "timeOut": "2000",
+	  "timeOut": "4000",
 	  "extendedTimeOut": "1000",
 	  "showEasing": "swing",
 	  "hideEasing": "linear",
@@ -86,3 +143,4 @@
 	  "hideMethod": "fadeOut"
 	}
 
+	loadScreen("D");

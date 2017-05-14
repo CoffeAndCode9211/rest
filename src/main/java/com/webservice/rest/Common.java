@@ -11,13 +11,18 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.ws.rs.core.Response;
 
+import com.webservice.common.Utils;
 import com.webservice.dto.BikeExpenseTO;
 import com.webservice.dto.EmployeeTO;
+import com.webservice.dto.MyTimerTO;
+import com.webservice.dto.StringUtil;
 import com.webservice.model.BikeExpense;
 import com.webservice.model.Employee;
+import com.webservice.model.MyTimer;
+import com.webservice.model.StautusEnum;
 
 public class Common {
-	
+
 	public static EmployeeTO transformToEmployeeTO(Employee emp){
 		EmployeeTO employeeTO = new EmployeeTO();
 		employeeTO.setLastName(emp.getLastName());
@@ -29,7 +34,7 @@ public class Common {
 		}
 		return employeeTO;
 	}
-	
+
 
 	private static final String DATE_TIME_FORMAT="dd-MMM-yyyy";
 
@@ -42,7 +47,7 @@ public class Common {
 		DateFormat formatter = new SimpleDateFormat(DATE_TIME_FORMAT);
 		return formatter.format(srcDate);
 	}
-	
+
 	public static Employee transformToEmployee(EmployeeTO empTo){
 		Employee employee = new Employee();
 		employee.setLastName(empTo.getLastName());
@@ -55,7 +60,7 @@ public class Common {
 
 		return employee;
 	}
-	
+
 
 	public static BikeExpenseTO transformToBikeExpenseTO(BikeExpense bikeExpense){
 		BikeExpenseTO bikeExpenseTO = new BikeExpenseTO();
@@ -67,18 +72,18 @@ public class Common {
 		if(bikeExpense.getMeterReading() != null){
 			bikeExpenseTO.setMeterReading(bikeExpense.getMeterReading().toString());
 		}
-		
+
 		if(bikeExpense.getPetrolQty() != null){
 			bikeExpenseTO.setPetrolQty(String.format("%.2f", bikeExpense.getPetrolQty()));
 		}
 		if(bikeExpense.getPricePerLtr() != null){
 			bikeExpenseTO.setPricePerLtr(String.format("%.2f", bikeExpense.getPricePerLtr()));
 		}
-		
+
 		bikeExpenseTO.setReason(bikeExpense.getReason());
 		return bikeExpenseTO;
 	}
-	
+
 	public static BikeExpense transformToBikeExpense(BikeExpenseTO bikeExpenseTO) throws ParseException{
 		BikeExpense bikeExpense = new BikeExpense();
 		if(bikeExpenseTO.getAmount() != null){
@@ -102,11 +107,58 @@ public class Common {
 		if(bikeExpenseTO.getReason() != null){
 			bikeExpense.setReason(bikeExpenseTO.getReason());
 		}
-		
+
 		return bikeExpense;
 	}
+
+
+	public static MyTimer transformToMyTimer(MyTimerTO myTimerTO) throws ParseException{
+		MyTimer myTimer = new MyTimer();
+		if(!StringUtil.isNullCombo(myTimerTO.getReason())){
+			myTimer.setReason(myTimerTO.getReason());
+		}
+		if(!StringUtil.isNullCombo(myTimerTO.getStartDate())){
+			myTimer.setStartDate(convertStringToDate(myTimerTO.getStartDate()));
+		}
+		if(myTimerTO.getId() != null){
+			myTimer.setId(myTimerTO.getId());
+		}
+		if(!StringUtil.isNullCombo(myTimerTO.getStatus())){
+			myTimer.setStatus(StautusEnum.valueOf(myTimerTO.getStatus()));
+		}else{
+			myTimer.setStatus(StautusEnum.A);
+		}
+		return myTimer;
+	}
+
+	public static MyTimerTO transformToMyTimerTO(MyTimer myTimer){
+		MyTimerTO myTimerTO = new MyTimerTO();
+		if(myTimer.getId() != null){
+			myTimerTO.setId(myTimer.getId());
+		}
+		if(myTimer.getReason() != null){
+			myTimerTO.setReason(myTimer.getReason());
+		}
+		if(myTimer.getStartDate() != null){
+
+			myTimerTO.setStartDate(convertDateToString(myTimer.getStartDate()));
+			String date = Utils.calDateInStr(myTimer.getStartDate());
+			if(!StringUtil.isNullOrBlank(date)){
+				myTimerTO.setTotalTime(date);
+			}
+			String nextEventDate = Utils.nextEventDays(myTimer.getStartDate());
+			if(!StringUtil.isNullOrBlank(nextEventDate)){
+				myTimerTO.setNextOccTime(nextEventDate);
+			}
+		}
+		if(myTimer.getStatus() != null){
+			myTimerTO.setStatus(myTimer.getStatus().toString());
+		}
+		return myTimerTO;
+	}
+
 	
-	
+
 	public static Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
 		Map<String, String> responseObj = new HashMap<String, String>();
 		for (ConstraintViolation<?> violation : violations) {

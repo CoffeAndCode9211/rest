@@ -1,0 +1,202 @@
+<script type="text/javascript">
+var selectedTimerId = "";
+
+var tblMyTimerGrid;
+function searchTimerData(){
+
+    tblMyTimerGrid = $("#tblMyTimerGrid").DataTable({
+        "processing": false,
+        "searching": true,
+        "serverSide": false,
+        scrollY:   300,
+        scroller:       true,
+        "paging": true,
+        "orderCellsTop": true,
+        "destroy": true,
+        dom: 'rtip',
+        "columns": [
+            { "data": "reason"},
+            { "data": "startDate"},
+            { "data": "totalTime"},
+            { "data": "nextOccTime"},
+        ],
+        "ajax": {
+            "url": "../rest/mytimer?",
+            "type": "GET",
+            "dataSrc": "[]",
+            
+        }
+    });
+}
+
+
+ $('#tblMyTimerGrid').on( 'click', 'tr', function () {
+      tblMyTimerGrid.$('tr.selected').removeClass('selected');
+      $(this).addClass('selected');
+ });
+ 
+ $('#tblMyTimerGrid').on( 'dblclick', 'tr', function () {
+      var iPos = $('#tblMyTimerGrid').dataTable().fnGetPosition(this);
+      var aData = $('#tblMyTimerGrid').dataTable().fnGetData( iPos );
+      console.log(aData);
+      selectedTimerId = aData.id;
+      loadTimerDetail();
+      
+ });
+ 
+function loadTimerDetail(){
+
+     var url = "../rest/mytimer/"+selectedTimerId;
+    $.get(url, function(data, status){
+        $("#btnSaveAddTimer").text("Update");
+        $("#txtNewTimerReason").val(data.reason);
+        $("#txtNewTimerDate").val(data.startDate);
+        $("#btnDeleteTimer").removeClass("hide");
+        $('#addTimerContainer').modal('toggle'); 
+    });
+}
+
+
+searchTimerData();
+
+
+jQuery().datepicker && $(".newtimerDateCont").datepicker({
+     orientation: "right",
+    autoclose: !0
+});
+
+
+/*   New TImer Code */
+
+function saveUpdateNewTimer(status){
+    var url = "../rest/mytimer";
+    var type = "POST";
+    var data = {
+        reason : $("#txtNewTimerReason").val(),
+        startDate : $("#txtNewTimerDate").val(),
+        id : selectedTimerId,
+        status : status
+    };
+
+    $.ajax({
+        type : type,
+        url : url,
+        data : JSON.stringify(data),
+        contentType: "application/json",
+        success : function(data) {
+            if(status == "I"){
+                toastr["success"]("Timer Detail Deleted Successfully");
+            }else{
+                toastr["success"]("Timer Detail Saved Successfully");
+            }
+             
+             resetTimerField();
+             searchTimerData();
+        }, error : function(error){ alert(JSON.stringify(error.responseText));}
+    });
+    
+}
+
+function resetTimerField(){
+    selectedTimerId = "";
+    $("#btnSaveAddTimer").val("Save");
+    $("#txtNewTimerReason").val("");
+    $("#txtNewTimerDate").val("");
+    $("#btnDeleteTimer").addClass("hide");
+    $('#addTimerContainer').modal('toggle');
+}
+
+$("#btnSaveAddTimer").click(function(){
+    saveUpdateNewTimer("A");
+});
+
+$("#btnDeleteTimer").click(function(){
+    saveUpdateNewTimer("I");
+});
+
+$("#btnCloseAddTimer").click(function(){
+    resetTimerField();
+});
+
+$("#btnOpenAddTimer").click(function(){
+    $('#addTimerContainer').modal('toggle'); 
+});
+
+
+
+</script>
+<div class="mytimerContainer">
+   
+
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <div class="caption">
+                My Timers </div>
+            <div class="actions"> 
+                <button type="button" class="btn default btn-sm" id="btnOpenAddTimer" data-toggle="modal">
+                    <i class="fa fa-plus"></i>
+                    Add</button>
+            </div>
+        </div>
+        <div class="portlet-body">
+
+            <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="tblMyTimerGrid" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Reason</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Next</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+<div id="addTimerContainer" data-backdrop="static" class="modal fade in" tabindex="-1" data-width="350" aria-hidden="false" >
+     <div class="modal-header">
+        <h4 class="form-section"><span class="caption-subject font-dark sbold ">Add New Timer</span></h4>
+    </div>
+   <div class="modal-body">
+        <form action="#" class="horizontal-form">
+            <div class="form-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Reason</label>
+                            <input type="text" id="txtNewTimerReason" class="form-control" placeholder="Timer Event Description...">
+                            <span class="help-block"> </span>
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Date</label>
+                             <div class="input-group date date-picker newtimerDateCont" data-date-format="dd-M-yyyy" >
+                                <input type="text" class="form-control" id="txtNewTimerDate" >
+                                <span class="input-group-btn">
+                                    <button class="btn default" type="button">
+                                        <i class="fa fa-calendar"></i>
+                                    </button>
+                                </span>
+                            </div>
+                            <span class="help-block"> </span>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="btn blue" id="btnSaveAddTimer">
+            <i class="fa fa-check"></i> Save</button>
+        <button type="submit" class="btn red hide" id="btnDeleteTimer">
+            <i class="fa fa-times"></i> Delete</button>
+        <button type="button" class="btn default" id="btnCloseAddTimer">Close</button>
+    </div>
+</div>
