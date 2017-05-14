@@ -165,7 +165,7 @@ public class RestActivityLog implements Serializable {
 
 	@Override
     public String toString() {
-        return "com.etipl.pms.entity.RestActivityLog[ id=" + id + " ]";
+        return "com.webservice.model.RestActivityLog[ id=" + id + " ]";
     }
     
 }
