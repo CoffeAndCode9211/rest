@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <h4 class="form-section"><span class="caption-subject font-dark sbold ">Medicine Information</span></h4>
+</div>
+<div class="modal-body">
+    
+     <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <button type="button"  id="btnDrugMoreDetail" class="btn btn-primary">More Detail</button>
+                <button type="button"  id="btnDrugAltDetail" class="btn btn-primary">Alternative</button>
+                <button type="button"  id="btnDrugSimDetail" class="btn btn-primary">Similar</button>
+                <button type="button"  id="btnDrugUsageDetail" class="btn btn-primary">Usage</button>
+                <button type="button"  id="btnDrugSideEffectDetail" class="btn btn-primary">Side Effects</button>
+                <button type="button"  id="btnDrugClose" class="btn btn-primary">Close</button>
+            </div>
+        </div>
+     </div>
+
+      <div class="row" >
+
+            <pre id="contextLoader"  style="height: 400px; overflow:auto;">
+
+
+            </pre>
+        
+     </div>
+
+</div>
+<script type="text/javascript">
+
+
+
+
+function getDetailDrug(url){  
+    $("#contextLoader").text("");
+    var authCode = token_type+" "+access_token;
+    $.ajax({
+          url: url,
+          type: "GET",
+          beforeSend: function( xhr ) {
+            xhr.setRequestHeader ( "Authorization", authCode );
+          },
+          success: function(jsonObject)
+          {         
+                var jsonPretty = JSON.stringify(jsonObject, null, '\t');
+                $("#contextLoader").text(jsonPretty);
+
+          }                                     
+          ,
+          error: function (error)
+          {
+                alert("Error");
+          } 
+    });
+}   
+
+
+$("#btnDrugMoreDetail").click(function(){
+    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId);
+});
+
+$("#btnDrugAltDetail").click(function(){
+    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/alternatives?page=1&size=10");
+});
+
+$("#btnDrugSimDetail").click(function(){
+    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/similar");
+});
+
+$("#btnDrugUsageDetail").click(function(){
+    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/usages");
+});
+
+$("#btnDrugSideEffectDetail").click(function(){
+    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/side_effects");
+});
+
+$("#btnDrugClose").click(function(){
+    $('#drugDetailContainer').modal('toggle'); 
+});
+
+
+</script>
