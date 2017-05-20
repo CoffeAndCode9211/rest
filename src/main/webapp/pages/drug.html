@@ -1,0 +1,144 @@
+<input type="button" id="btnGetAccessCode"  value="Get Access Code" />
+<input type="button" id="btnGetAllMed"  value="Get All Med" />
+<br>
+<input type="text"  placeholder="Search for a Drug" id="txtSrchForMed"  />
+
+<input type="button" id="btnSrchForMed"  value="Search Drug With Name" />
+
+
+
+<pre id="contextLoader">
+
+
+</pre>
+<script type="text/javascript">
+
+
+
+var access_token = "41da804d55c0ad7656c73be79818a851b4b8f504b53a2b68f79dedbf5674d227";
+var token_type = "bearer";
+var scope = "public read write";
+
+$("#btnGetAccessCode").click(function(){
+
+
+
+ 	var url = "http://www.healthos.co/api/v1/oauth/token.json";
+    var type = "POST";
+    var data = {
+        grant_type : "client_credentials",
+        client_id : "75ba49679ac81ca9a67e42703691ba49798efec4f598c1361b51c3305581fe4b",
+        client_secret : "1309616c9aa98a674c48f357070fa705206dd762dc5ba2c9163afcc94b84141f",
+        scope : "public read write",
+    }
+    $.ajax({
+        type : type,
+        url : url,
+        data : JSON.stringify(data),
+        contentType: "application/json",
+        success : function(data) {
+             
+        	access_token = data.access_token;
+        	token_type = data.token_type;
+        	scope = data.scope;
+
+         	console.log(data);
+         	alert("Access Granted. Proceed to search");
+
+
+        }, error : function(error){ alert(JSON.stringify(error.responseText));}
+    });
+
+
+});
+
+
+function saveData(json){
+	var url = "../rest/druginfo";
+	var type = "POST";
+    $.ajax({
+        type : type,
+        url : url,
+        data : JSON.stringify(json),
+        contentType: "application/json",
+        success : function(data) {
+           	console.log(data);
+   			pagevar = pagevar +1;
+   			getAllDrug();
+        }, error : function(error){ alert(JSON.stringify(error.responseText));}
+    });
+}
+
+var pagevar = 443;
+function getAllDrug(){	
+	$("#contextLoader").text("");
+	var authCode = token_type+" "+access_token;
+	$.ajax({
+		  url: "http://www.healthos.co/api/v1/medicines/brands?page="+pagevar,
+		  type: "GET",
+		  beforeSend: function( xhr ) {
+		    xhr.setRequestHeader ( "Authorization", authCode );
+		  },
+		  success: function(jsonObject)
+		  {			
+				console.log(jsonObject);
+				var jsonPretty = JSON.stringify(jsonObject, null, '\t');
+				$("#contextLoader").text(jsonPretty);
+
+				//saveData(jsonObject);
+
+
+		  }										
+		  ,
+		  error: function (error)
+		  {
+				alert("Error");
+		  } 
+	});
+}	
+
+
+$("#btnGetAllMed").click(function(){
+
+	getAllDrug();
+
+
+});
+
+
+
+function searchDrug(){	
+	$("#contextLoader").text("");
+	var authCode = token_type+" "+access_token;
+	$.ajax({
+		  url: "http://www.healthos.co/api/v1/autocomplete/medicines/brands/"+$("#txtSrchForMed").val(),
+		  type: "GET",
+		  beforeSend: function( xhr ) {
+		    xhr.setRequestHeader ( "Authorization", authCode );
+		  },
+		  success: function(jsonObject)
+		  {			
+				console.log(jsonObject);
+				var jsonPretty = JSON.stringify(jsonObject, null, '\t');
+				$("#contextLoader").text(jsonPretty);
+
+
+		  }										
+		  ,
+		  error: function (error)
+		  {
+				alert("Error");
+		  } 
+	});
+}	
+
+
+$("#btnSrchForMed").click(function(){
+
+	searchDrug();
+
+
+});
+
+
+</script>

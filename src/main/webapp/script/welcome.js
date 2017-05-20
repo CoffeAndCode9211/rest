@@ -10,7 +10,7 @@ var noOfCalls = 1;
 
 
 	 	$( document ).ajaxSend(function() {
-			$.blockUI({ boxed: true});
+			//$.blockUI({ boxed: true});
 		});
 
 		$(document).ajaxComplete(function(){
@@ -57,6 +57,10 @@ var noOfCalls = 1;
 			loadScreen("MT");
 		});
 
+		$("#linkDrug").click(function(){
+			loadScreen("DR");
+		});
+
 	});
 	
 
@@ -80,6 +84,8 @@ var noOfCalls = 1;
 			$(".srcContainer").load("email.html");
 		}else if(screenName == "MT"){
 			$(".srcContainer").load("mytimer.html");
+		}else if(screenName == "DR"){
+			$(".srcContainer").load("drug.html");
 		}else if(screenName == "L"){
 			confirmLogout("Are you sure you want to logout? ")
 		}

@@ -9,3 +9,22 @@ Description:
 	Mail Implementation
 	QuartzCdi Example // just uncomment @Startup @Singleton in com.webservice.trigger
 	javax Trigger // just uncomment @Startup @Singleton in com.webservice.trigger
+	
+	
+	
+	
+	CREATE TABLE `DRUG_INFO` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `NAME` varchar(500) DEFAULT NULL,
+  `FORM` varchar(250) DEFAULT NULL,
+  `STANDARDUNITS` varchar(250) DEFAULT NULL,
+  `PACKAGEFORM` varchar(250) DEFAULT NULL,
+  `PRICE` varchar(250) DEFAULT NULL,
+  `SIZE` varchar(250) DEFAULT NULL,
+  `MANUFACTURER` varchar(250) DEFAULT NULL,
+  `CONSTITUENTS` varchar(1000) DEFAULT NULL,
+  `SCHEDULE` varchar(250) DEFAULT NULL,
+  `DRUD_ID` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `DRUD_ID` (`DRUD_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

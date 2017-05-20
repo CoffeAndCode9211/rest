@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,10 +14,14 @@ import javax.ws.rs.core.Response;
 
 import com.webservice.common.Utils;
 import com.webservice.dto.BikeExpenseTO;
+import com.webservice.dto.ConstituentsTO;
+import com.webservice.dto.DrugInfoTO;
 import com.webservice.dto.EmployeeTO;
 import com.webservice.dto.MyTimerTO;
+import com.webservice.dto.ScheduleTO;
 import com.webservice.dto.StringUtil;
 import com.webservice.model.BikeExpense;
+import com.webservice.model.DrugInfo;
 import com.webservice.model.Employee;
 import com.webservice.model.MyTimer;
 import com.webservice.model.StautusEnum;
@@ -35,6 +40,65 @@ public class Common {
 		return employeeTO;
 	}
 
+	
+	public static DrugInfoTO transformToDrugTO(DrugInfo drugInfo){
+		DrugInfoTO drugInfoTO = new DrugInfoTO();
+		drugInfoTO.setForm(drugInfo.getForm());
+		drugInfoTO.setId(drugInfo.getId());
+		//drugInfoTO.setLstConstituents(drugInfo.getConstituents());
+		drugInfoTO.setManufacturer(drugInfo.getManufacturer());
+		drugInfoTO.setMedicine_id(drugInfo.getDrugId());
+		drugInfoTO.setName(drugInfo.getName());
+		drugInfoTO.setPackageForm(drugInfo.getPkgForm());
+		drugInfoTO.setPrice(drugInfo.getPrice());
+		//drugInfoTO.setSchedule(drugInfo.getSchedule());
+		drugInfoTO.setSize(drugInfo.getSize());
+		drugInfoTO.setStandardUnits(drugInfo.getSchedule());
+		
+		
+		return drugInfoTO;
+	}
+	
+	public static DrugInfo transformToDrugInfo(DrugInfoTO drugInfoTO){
+		DrugInfo drugInfoo = new DrugInfo();
+		drugInfoo.setForm(drugInfoTO.getForm());
+		drugInfoo.setId(drugInfoTO.getId());
+		List<ConstituentsTO> lst = drugInfoTO.getConstituents();
+		StringBuilder str = new StringBuilder();
+		if(lst != null && !lst.isEmpty()){
+			
+			for(ConstituentsTO row: lst){
+				if(row.getName() != null){
+					str.append(row.getName());
+					str.append("_");
+				}
+				if(row.getStrength() != null){
+					str.append(row.getStrength());
+					str.append("|");
+				}
+			}
+		}
+		drugInfoo.setConstituents(str.toString());
+		drugInfoo.setManufacturer(drugInfoTO.getManufacturer());
+		drugInfoo.setDrugId(drugInfoTO.getMedicine_id());
+		drugInfoo.setName(drugInfoTO.getName());
+		drugInfoo.setPkgForm(drugInfoTO.getPackageForm());
+		drugInfoo.setPrice(drugInfoTO.getPrice());
+		ScheduleTO sch = drugInfoTO.getSchedule();
+		if(sch != null){
+			StringBuilder strrr = new StringBuilder();
+			strrr.append(sch.getCategory());
+			strrr.append("_");
+			strrr.append(sch.getLabel());
+			drugInfoo.setSchedule(strrr.toString());
+		}
+		
+		drugInfoo.setSize(drugInfoTO.getSize());
+		drugInfoo.setStandardUnits(drugInfoTO.getStandardUnits());
+		
+		
+		return drugInfoo;
+	}
 
 	private static final String DATE_TIME_FORMAT="dd-MMM-yyyy";
 
