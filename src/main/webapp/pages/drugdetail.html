@@ -1,29 +1,148 @@
 <div class="modal-header">
-    <h4 class="form-section"><span class="caption-subject font-dark sbold ">Medicine Information</span></h4>
+    <h4 class="form-section"><span class="caption-subject font-dark sbold drugheader">Medicine Information</span></h4>
 </div>
 <div class="modal-body">
     
-     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group">
-                <button type="button"  id="btnDrugMoreDetail" class="btn btn-primary">More Detail</button>
-                <button type="button"  id="btnDrugAltDetail" class="btn btn-primary">Alternative</button>
-                <button type="button"  id="btnDrugSimDetail" class="btn btn-primary">Similar</button>
-                <button type="button"  id="btnDrugUsageDetail" class="btn btn-primary">Usage</button>
-                <button type="button"  id="btnDrugSideEffectDetail" class="btn btn-primary">Side Effects</button>
-                <button type="button"  id="btnDrugClose" class="btn btn-primary">Close</button>
-            </div>
+
+    <div class="tabbable-line">
+        <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#tab_1_1_11" id="btnDrugMoreDetail" data-toggle="tab"> More Detail </a>
+            </li>
+            <li>
+              <a href="#tab_1_1_12" id="btnDrugAltDetail" data-toggle="tab"> Alternative </a>
+            </li>
+            <li>
+              <a href="#tab_1_1_12" id="btnDrugSimDetail" data-toggle="tab"> Similar </a>
+            </li>
+            <li>
+              <a href="#tab_1_1_14" id="btnDrugUsageDetail" data-toggle="tab"> Usage </a>
+            </li>
+            <li>
+              <a href="#tab_1_1_14" id="btnDrugSideEffectDetail" data-toggle="tab"> Side Effect </a>
+            </li>
+            
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="tab_1_1_11">
+
+              <form class="form-horizontal" role="form">
+                  <div class="form-body">
+                      <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Name:</label>
+                                    <div class="col-md-10">
+                                        <p class="form-control-static" id="txtDrugName">  </p>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Constituents:</label>
+                                    <div class="col-md-10">
+                                        <p class="form-control-static" id="txtDrugConstituents">  </p>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+
+
+                         <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Components:</label>
+                                    <div class="col-md-10">
+                                        <p class="form-control-static" id="txtDrugComponents">  </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+                         <div class="row">
+                              <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">Interactions:</label>
+                                    <div class="col-md-10">
+                                        <p class="form-control-static" id="txtDrugInteractions">  </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+
+
+
+                     </div>
+                  </form>
+
+              <pre id="contextLoader"  class="hide" style="height: 400px; overflow:auto; ">
+
+
+              </pre>
+
+          </div>
+          <div class="tab-pane" id="tab_1_1_12">
+              
+              <div class="portlet box green drugDetailContainer">
+                  <div class="portlet-title">
+                      <div class="caption altdrugheader">
+                          List of Medicine(s) </div>
+                      <div class="tools"> </div>
+                  </div>
+                  <div class="portlet-body">
+
+                      <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="tblDrugDetailGrid" cellspacing="0" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>Name</th>
+                                  <th>Form</th>
+                                  <th>Pkg Form</th>
+                                  <th>Constituents</th>
+                                  <th>Remark</th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+              </div>
+
+          </div>
+          
+           <div class="tab-pane" id="tab_1_1_14">
+              
+              <div class="portlet box green drugDetailContainer">
+                  <div class="portlet-title">
+                      <div class="caption altdrugusage">
+                          List of Medicine(s) </div>
+                      <div class="tools"> </div>
+                  </div>
+                  <div class="portlet-body">
+
+                      <table class="table table-striped table-bordered table-hover dt-responsive" width="100%" id="tblDrugUsageGrid" cellspacing="0" width="100%">
+                          <thead>
+                              <tr>
+                                  <th>Generic</th>
+                                  <th id="usageHeader">Usages</th>
+                              </tr>
+                          </thead>
+                      </table>
+                  </div>
+              </div>
+
+          </div>
+           
         </div>
-     </div>
-
-      <div class="row" >
-
-            <pre id="contextLoader"  style="height: 400px; overflow:auto;">
-
-
-            </pre>
+    </div>
         
-     </div>
+
 
 </div>
 <script type="text/javascript">
@@ -45,6 +164,54 @@ function getDetailDrug(url){
                 var jsonPretty = JSON.stringify(jsonObject, null, '\t');
                 $("#contextLoader").text(jsonPretty);
 
+
+                $("#txtDrugName").text(jsonObject.name + "  ("+jsonObject.size+")");
+                if(jsonObject.constituents != null && jsonObject.constituents.length > 0){
+                    var data = "";
+                    jsonObject.constituents.forEach(function (item, index){
+                        if(index > 0){
+                          data += ", ";
+                        }
+                        data += item.name + " "+item.strength;
+                    });
+                    $("#txtDrugConstituents").text(data);
+                }
+                if(jsonObject.components != null && jsonObject.components.length > 0){
+                    var data = "";
+                    jsonObject.components.forEach(function (item, index){
+                        if(index > 0){
+                          data += "<br><br> ";
+                        }
+                        data += "<b>"+item.name + ":</b>  "+item.how_it_works;
+                    });
+                    $("#txtDrugComponents").html(data);
+                }
+
+                if(jsonObject.interactions != null){
+                    var data = "";
+                    if(jsonObject.interactions.pregnancy != null){
+                         data += "<b>Pregnancy:</b>  "+jsonObject.interactions.pregnancy.description;
+                    }
+                    if(jsonObject.interactions.food != null){
+                          data += "<br><br> ";
+                         data += "<b>Food:</b>  "+jsonObject.interactions.food.description;
+                    }
+
+                    if(jsonObject.interactions.lactation != null){
+                        data += "<br><br> ";
+                         data += "<b>Lactation:</b>  "+jsonObject.interactions.lactation.description;
+                    }
+
+                    if(jsonObject.interactions.alcohol != null){
+                        data += "<br><br> ";
+                         data += "<b>Alcohol:</b>  "+jsonObject.interactions.alcohol.description;
+                    }
+
+
+                   
+                    $("#txtDrugInteractions").html(data);
+                }
+
           }                                     
           ,
           error: function (error)
@@ -60,24 +227,170 @@ $("#btnDrugMoreDetail").click(function(){
 });
 
 $("#btnDrugAltDetail").click(function(){
-    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/alternatives?page=1&size=10");
+    $(".altdrugheader").html("List of Alternative Medicine(s)");
+    searchDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/alternatives?page=1&size=10");
 });
 
 $("#btnDrugSimDetail").click(function(){
-    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/similar");
+    $(".altdrugheader").html("List of Similar Medicine(s)");
+     searchDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/similar");
 });
 
 $("#btnDrugUsageDetail").click(function(){
-    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/usages");
+    $(".altdrugusage").html("Medicine can be used for");
+    searchDrugUsage("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/usages", "usages");
 });
 
 $("#btnDrugSideEffectDetail").click(function(){
-    getDetailDrug("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/side_effects");
+    $(".altdrugusage").html("Medicine's Side Effects");
+    searchDrugUsage("http://www.healthos.co/api/v1/medicines/brands/"+selectedMedId+"/side_effects", "side_effects");
 });
 
 $("#btnDrugClose").click(function(){
     $('#drugDetailContainer').modal('toggle'); 
 });
 
+
+
+var drugDetail;
+
+function searchDrug(url){  
+  var authCode = token_type+" "+access_token;
+  drugDetail = $("#tblDrugDetailGrid").DataTable({
+        "processing": false,
+        "searching": true,
+        "serverSide": false,
+        scrollY:   300,
+        scroller:       true,
+        "paging": true,
+        "orderCellsTop": true,
+        "destroy": true,
+        dom: 'rt',
+        "aaSorting": [],
+        buttons: [{
+            extend: "print",
+            className: "btn default"
+        }, {
+            extend: "pdf",
+            className: "btn default"
+        }, {
+            extend: "csv",
+            className: "btn default"
+        }],
+        "columns": [
+            { "data": "name"},
+            { "data": "form"},
+            { "data": "packageForm"},
+            { "data": "constituents",
+              "render": function(data, type, full)
+          {
+            if(full.constituents != null && full.constituents.length > 0){
+              var dataToShow = "";
+              full.constituents.forEach(function (item, index){
+                if(index > 0){
+                  dataToShow += "<br>";
+                }
+                var name = item.name;
+                var strength = item.strength;
+                dataToShow += name+" "+strength;
+
+              });
+              return dataToShow;
+            }
+            return "";
+          }
+          },
+           { "data": "schedule",
+              "render": function(data, type, full)
+          {
+            if(full.schedule.label != null){
+              return full.schedule.label;
+            }
+            return "";
+          }
+          },
+           
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            beforeSend: function( xhr ) {
+          xhr.setRequestHeader ( "Authorization", authCode );
+        },
+            "dataSrc": "[]",
+            
+        }
+    });
+
+} 
+
+
+
+
+
+var drugUsageDetail;
+
+function searchDrugUsage(url, col2name){  
+  var authCode = token_type+" "+access_token;
+  drugUsageDetail = $("#tblDrugUsageGrid").DataTable({
+        "processing": false,
+        "searching": true,
+        "serverSide": false,
+        scrollY:   300,
+        scroller:       true,
+        "paging": true,
+        "orderCellsTop": true,
+        "destroy": true,
+        dom: 'rt',
+        "aaSorting": [],
+        buttons: [{
+            extend: "print",
+            className: "btn default"
+        }, {
+            extend: "pdf",
+            className: "btn default"
+        }, {
+            extend: "csv",
+            className: "btn default"
+        }],
+        "columns": [
+            { "data": "generic"},
+            { "data": col2name,
+              "render": function(data, type, full)
+              {
+                if(full[col2name] != null && full[col2name].length > 0){
+                  var dataToShow = "";
+                  full[col2name].forEach(function (item, index){
+                    if(index > 0){
+                      dataToShow += ", ";
+                    }
+                    if(index %4 == 0){
+                      dataToShow += "<br>";   
+                    }
+                    var term = item.term;
+                    var percent = item.percent;
+                    dataToShow += term+" ("+percent+"%)";
+
+                  });
+                  return dataToShow;
+                }
+                return "";
+              }
+
+
+            },
+        ],
+        "ajax": {
+            "url": url,
+            "type": "GET",
+            beforeSend: function( xhr ) {
+          xhr.setRequestHeader ( "Authorization", authCode );
+        },
+            "dataSrc": "[]",
+            
+        }
+    });
+
+} 
 
 </script>

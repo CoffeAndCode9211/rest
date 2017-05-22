@@ -118,6 +118,8 @@ var selectedMedId = "";
       selectedMedId = aData.medicine_id;
 
 	$( "#drugDetailContainer" ).load( "drugdetail.html", function() {
+        $(".drugheader").text(aData.name);
+        $("#btnDrugMoreDetail").click();
 		 $('#drugDetailContainer').modal('toggle'); 
 	});
 
@@ -180,7 +182,7 @@ emptyDattable();
         </div>
         <div class="portlet-body">
 
-            <form class="form-horizontal" id="employeeForm">
+            <form class="form-horizontal" onsubmit="return false;" id="employeeForm">
                 <div class="form-body">
                     <div class="row">
                         <div class="col-sm-6">
@@ -231,6 +233,6 @@ emptyDattable();
 
 
 
-<div id="drugDetailContainer"  class="modal fade in" tabindex="-1" data-width="600" aria-hidden="false" >
+<div id="drugDetailContainer"  class="modal fade in" tabindex="-1" data-width="900"  aria-hidden="false" >
      
 </div>
