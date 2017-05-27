@@ -22,10 +22,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- *
- * @author Edgeware
- */
+
 @Entity
 @Table(name = "REST_ACTIVITY_LOG")
 public class RestActivityLog implements Serializable {
