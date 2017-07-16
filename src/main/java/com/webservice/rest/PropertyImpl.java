@@ -20,42 +20,40 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.webservice.dto.BikeExpenseTO;
-import com.webservice.model.BikeExpense;
-import com.webservice.service.BikeExpenseEJBIf;
-import com.webservice.service.CommonEJBIf;
+import com.webservice.dto.EmployeeTO;
+import com.webservice.model.Property;
+import com.webservice.service.PropertyEJBIf;
 
 @Stateless
-public class BikeExpenseImpl implements BikeExpenseIf{
+public class PropertyImpl implements PropertyIf{
 
 	Response.ResponseBuilder builder = null;
-	private static final Logger logger = LoggerFactory.getLogger(BikeExpenseImpl.class);
+	private static final Logger logger = LoggerFactory.getLogger(PropertyImpl.class);
 
 	@EJB
-	private BikeExpenseEJBIf bikeExpenseEJBIf;
-	
-	@EJB
-	private CommonEJBIf commonEJBIf;
+	private PropertyEJBIf empEJbIf;
 
 	
 	@Inject
 	private Validator validator;
 
-	public List<BikeExpenseTO> getBikeExpenseDetails( String lastName, 
-			String firstName) {
-		List<BikeExpenseTO> lstEmpTo = null;
+	public List<EmployeeTO> getEmployeeDetails( String lastName, 
+			String firstName, String email, String phone) {
+		List<EmployeeTO> lstEmpTo = null;
 		try{
-			BikeExpenseTO emp = new BikeExpenseTO();
-			
-			List<BikeExpense>  lstEmployee = bikeExpenseEJBIf.getBikeExpensesByFilter(emp);
-			commonEJBIf.getData();
+			Property emp = new Property();
+			emp.setEmail(email);
+			emp.setFirstName(firstName);
+			emp.setLastName(lastName);
+			emp.setPhone(phone);
+			List<Property>  lstEmployee = empEJbIf.getPropertysByFilter(emp);
 			if(lstEmployee != null && !lstEmployee.isEmpty()){
-				lstEmpTo = new ArrayList<BikeExpenseTO>();
-				Iterator<BikeExpense > itr = lstEmployee.iterator();
+				lstEmpTo = new ArrayList<EmployeeTO>();
+				Iterator<Property > itr = lstEmployee.iterator();
 				while(itr.hasNext()){
 					logger.info("next Data");
-					BikeExpense e = itr.next();
-					lstEmpTo.add(Common.transformToBikeExpenseTO(e));
+					Property e = itr.next();
+					lstEmpTo.add(Common.transformToEmployeeTO(e));
 				}
 			}
 
@@ -65,32 +63,35 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 		return lstEmpTo;
 	}
 
-	public BikeExpenseTO getBikeExpenseById(int id) {
-		BikeExpenseTO BikeExpenseTO = null;
+	public EmployeeTO getEmployeeById(int id) {
+		EmployeeTO employeeTO = null;
 		try{
 			logger.info("id is :"+id);
-			BikeExpense emp = bikeExpenseEJBIf.getBikeExpenseById(id);
+			if(empEJbIf == null){
+				logger.info("hola");
+			}
+			Property emp = empEJbIf.getPropertyById(id);
 			if(emp != null ){
-				BikeExpenseTO = Common.transformToBikeExpenseTO(emp);
+				employeeTO = Common.transformToEmployeeTO(emp);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return BikeExpenseTO;
+		return employeeTO;
 	}
 
-	public Response addBikeExpense(BikeExpenseTO empTo) {
+	public Response addEmployee(EmployeeTO empTo) {
 		try{
 			logger.info(empTo.toString());
 			validateEmployee(empTo);
-			BikeExpense emp = Common.transformToBikeExpense(empTo);
-			Boolean response = bikeExpenseEJBIf.addBikeExpense(emp);
+			Property emp = Common.transformToEmployeeee(empTo);
+			Boolean response = empEJbIf.addProperty(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				responseObj.put("Success", "Bike Expense saved successfully");
+				responseObj.put("Success", "Property saved successfully");
 				return Response.ok().entity(responseObj).build();
 			}else{
-				responseObj.put("Error", "Error while saving Bike Expense");
+				responseObj.put("Error", "Error while saving Property");
 				return Response.noContent().entity(responseObj).build();
 			}
 
@@ -110,17 +111,18 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 		}
 	}
 
-	public Response updateBikeExpense(BikeExpenseTO empTo, int id) {
+	public Response updateEmployee(EmployeeTO empTo, int id) {
 		try{
 
-			BikeExpense emp = Common.transformToBikeExpense(empTo);
-			Boolean response = bikeExpenseEJBIf.updateBikeExpense(emp);
+			Property emp = Common.transformToEmployeeee(empTo);
+//			emp.setId(id);
+			Boolean response = empEJbIf.updateProperty(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
 			if(response){
-				responseObj.put("Success", "Employee updated successfully");
+				responseObj.put("Success", "Property updated successfully");
 				return Response.ok().entity(responseObj).build();
 			}else{
-				responseObj.put("Error", "Error while updating Employee");
+				responseObj.put("Error", "Error while updating Property");
 				return Response.noContent().entity(responseObj).build();
 			}
 		}catch(Exception e){
@@ -129,36 +131,35 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 		}
 	}
 
-	public Response deleteBikeExpense(int id) {
+	public Response deleteEmployee(int id) {
 		try{
 
-			BikeExpense emp = bikeExpenseEJBIf.getBikeExpenseById(id);
-			Boolean response = bikeExpenseEJBIf.deleteBikeExpense(emp);
+			Property emp = empEJbIf.getPropertyById(id);
 			Map<String, String> responseObj = new HashMap<String, String>();
+			Boolean response = empEJbIf.deleteProperty(emp);
 			if(response){
-				responseObj.put("Success", "Employee deleted successfully");
+				responseObj.put("Success", "Property deleted successfully");
 				return Response.ok().entity(responseObj).build();
 			}else{
-				responseObj.put("Error", "Error while deleting Employee");
+				responseObj.put("Error", "Error while deleting Property");
 				return Response.noContent().entity(responseObj).build();
 			}
 
 		}catch(Exception e){
 			e.printStackTrace();
 			Map<String, String> responseObj = new HashMap<String, String>();
-			responseObj.put("Error", "Error while deleting Employee");
+			responseObj.put("Error", "Error while deleting Property");
 			return Response.noContent().entity(responseObj).build();
 		}
 	}
 
-	
-	
-	
-	public void validateEmployee(BikeExpenseTO empTO) throws ConstraintViolationException, ValidationException {
-		Set<ConstraintViolation<BikeExpenseTO>> violations = validator.validate(empTO);
+
+	public void validateEmployee(EmployeeTO empTO) throws ConstraintViolationException, ValidationException {
+		Set<ConstraintViolation<EmployeeTO>> violations = validator.validate(empTO);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
 		}
 	}
+
 
 }

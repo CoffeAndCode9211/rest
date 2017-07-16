@@ -56,6 +56,11 @@ var noOfCalls = 1;
 		$("#linkMyTimer").click(function(){
 			loadScreen("MT");
 		});
+		
+		$("#linkProperty").click(function(){
+			loadScreen("PR");
+		});
+		
 
 		$("#linkDrug").click(function(){
 			loadScreen("DR");
@@ -88,6 +93,8 @@ var noOfCalls = 1;
 			$(".srcContainer").load("drug.html");
 		}else if(screenName == "L"){
 			confirmLogout("Are you sure you want to logout? ")
+		}else if(screenName == "PR"){
+			$(".srcContainer").load("property.html");
 		}
 
 	}

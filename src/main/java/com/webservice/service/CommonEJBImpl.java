@@ -1,16 +1,20 @@
 package com.webservice.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.webservice.dto.ActivityLogTO;
 import com.webservice.dto.StringUtil;
+import com.webservice.model.Property;
 import com.webservice.model.RestActivityLog;
 import com.webservice.model.Users;
 
@@ -27,6 +31,11 @@ public class CommonEJBImpl implements CommonEJBIf {
 
 	@PersistenceContext(unitName = "webUnit" )
 	private EntityManager em;
+	
+	
+	@PersistenceContext(unitName = "mongo-ogm")
+    private EntityManager emm;
+	
 	
 	@Resource
 	private SessionContext sctx;
@@ -57,6 +66,18 @@ public class CommonEJBImpl implements CommonEJBIf {
 		}
 		em.persist(activityLog);
 		em.flush();
+	}
+
+
+	@Override
+	public List<Property> getData() {
+		Query query = emm.createQuery("Select p FROM Property p");
+        List<Property> lstProp  = query.getResultList();
+        logger.info("Getting Data");
+        for(Property p : lstProp){
+//        	logger.info("Data:"+p.getKey()+" Value:"+p.getValue());
+        }
+        return lstProp;
 	}
 
 }

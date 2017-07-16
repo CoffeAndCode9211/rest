@@ -118,7 +118,12 @@
 			<version>6.2.0-edge</version>
 		</dependency>
 
-
+		
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver</artifactId>
+			<version>3.4.2</version>
+		</dependency>
 
 
 	</dependencies>

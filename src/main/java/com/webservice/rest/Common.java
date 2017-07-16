@@ -24,6 +24,7 @@ import com.webservice.model.BikeExpense;
 import com.webservice.model.DrugInfo;
 import com.webservice.model.Employee;
 import com.webservice.model.MyTimer;
+import com.webservice.model.Property;
 import com.webservice.model.StautusEnum;
 
 public class Common {
@@ -221,6 +222,28 @@ public class Common {
 		return myTimerTO;
 	}
 
+	
+	public static EmployeeTO transformToEmployeeTO(Property emp){
+		EmployeeTO employeeTO = new EmployeeTO();
+		employeeTO.setLastName(emp.getLastName());
+		employeeTO.setFirstName(emp.getFirstName());
+		employeeTO.setEmail(emp.getEmail());
+		employeeTO.setPhone(emp.getPhone());
+		return employeeTO;
+	}
+	
+	public static Property transformToEmployeeee(EmployeeTO empTo){
+		Property employee = new Property();
+		employee.setLastName(empTo.getLastName());
+		employee.setFirstName(empTo.getFirstName());
+		employee.setEmail(empTo.getEmail());
+		employee.setPhone(empTo.getPhone());
+//		if(empTo.getId() != null){
+//			employee.setId(empTo.getId());
+//		}
+
+		return employee;
+	}
 	
 
 	public static Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
