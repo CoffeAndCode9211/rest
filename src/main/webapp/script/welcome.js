@@ -72,7 +72,9 @@ var noOfCalls = 1;
 
 	function loadScreen(screenName){
 		noOfCalls = 1;	
-		$(".srcContainer").empty();
+		if(screenName != "L"){
+			$(".srcContainer").empty();
+		}
 		if(screenName == "D"){
 			$(".srcContainer").load("dashboard.html");
 		}else if(screenName == "E"){
@@ -116,13 +118,13 @@ var noOfCalls = 1;
 			callback: function(result) {
 				if(result){
 					$.blockUI();
-					logout();
+					logoutMain();
 				}
 			}
 		});
 	}
 
-	function logout(){
+	function logoutMain(){
 		
 		$.ajax({
 			type : "PUT",

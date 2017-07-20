@@ -4,12 +4,13 @@
 
        $('#highchart_1').highcharts({
             chart : {
+                type: 'column',
                 style: {
                     fontFamily: 'Open Sans'
                 }
             },
             title: {
-                text: 'Bike Expense',
+                text: 'Motorcycle Expense',
                 x: -20 //center
             },
             /*
@@ -51,7 +52,7 @@
                 borderWidth: 0
             },
             series: [{
-                name: 'Bike',
+                name: 'Motorcycle',
                 data: values
             }]
         });
