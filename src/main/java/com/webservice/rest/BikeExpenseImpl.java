@@ -26,40 +26,39 @@ import com.webservice.service.BikeExpenseEJBIf;
 import com.webservice.service.CommonEJBIf;
 
 @Stateless
-public class BikeExpenseImpl implements BikeExpenseIf{
+public class BikeExpenseImpl implements BikeExpenseIf {
 
 	Response.ResponseBuilder builder = null;
 	private static final Logger logger = LoggerFactory.getLogger(BikeExpenseImpl.class);
 
 	@EJB
 	private BikeExpenseEJBIf bikeExpenseEJBIf;
-	
+
 	@EJB
 	private CommonEJBIf commonEJBIf;
 
-	
 	@Inject
 	private Validator validator;
 
-	public List<BikeExpenseTO> getBikeExpenseDetails( String lastName, 
-			String firstName) {
+	public List<BikeExpenseTO> getBikeExpenseDetails(String lastName, String firstName) {
 		List<BikeExpenseTO> lstEmpTo = null;
-		try{
+		try {
+
 			BikeExpenseTO emp = new BikeExpenseTO();
-			
-			List<BikeExpense>  lstEmployee = bikeExpenseEJBIf.getBikeExpensesByFilter(emp);
+
+			List<BikeExpense> lstEmployee = bikeExpenseEJBIf.getBikeExpensesByFilter(emp);
 			commonEJBIf.getData();
-			if(lstEmployee != null && !lstEmployee.isEmpty()){
+			if (lstEmployee != null && !lstEmployee.isEmpty()) {
 				lstEmpTo = new ArrayList<BikeExpenseTO>();
-				Iterator<BikeExpense > itr = lstEmployee.iterator();
-				while(itr.hasNext()){
+				Iterator<BikeExpense> itr = lstEmployee.iterator();
+				while (itr.hasNext()) {
 					logger.info("next Data");
 					BikeExpense e = itr.next();
 					lstEmpTo.add(Common.transformToBikeExpenseTO(e));
 				}
 			}
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return lstEmpTo;
@@ -67,34 +66,34 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 
 	public BikeExpenseTO getBikeExpenseById(int id) {
 		BikeExpenseTO BikeExpenseTO = null;
-		try{
-			logger.info("id is :"+id);
+		try {
+			logger.info("id is :" + id);
 			BikeExpense emp = bikeExpenseEJBIf.getBikeExpenseById(id);
-			if(emp != null ){
+			if (emp != null) {
 				BikeExpenseTO = Common.transformToBikeExpenseTO(emp);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return BikeExpenseTO;
 	}
 
 	public Response addBikeExpense(BikeExpenseTO empTo) {
-		try{
+		try {
 			logger.info(empTo.toString());
 			validateEmployee(empTo);
 			BikeExpense emp = Common.transformToBikeExpense(empTo);
 			Boolean response = bikeExpenseEJBIf.addBikeExpense(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
-			if(response){
+			if (response) {
 				responseObj.put("Success", "Bike Expense saved successfully");
 				return Response.ok().entity(responseObj).build();
-			}else{
+			} else {
 				responseObj.put("Error", "Error while saving Bike Expense");
 				return Response.noContent().entity(responseObj).build();
 			}
 
-		}catch (ConstraintViolationException ce) {
+		} catch (ConstraintViolationException ce) {
 			logger.error("There is an ConstraintViolationException");
 			builder = Common.createViolationResponse(ce.getConstraintViolations());
 			return builder.build();
@@ -104,46 +103,46 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 			logger.error("There is an ValidationException");
 			builder = Response.status(Response.Status.BAD_REQUEST).entity(responseObj);
 			return builder.build();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.noContent().entity(e.getMessage()).build();
 		}
 	}
 
 	public Response updateBikeExpense(BikeExpenseTO empTo, int id) {
-		try{
+		try {
 
 			BikeExpense emp = Common.transformToBikeExpense(empTo);
 			Boolean response = bikeExpenseEJBIf.updateBikeExpense(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
-			if(response){
+			if (response) {
 				responseObj.put("Success", "Employee updated successfully");
 				return Response.ok().entity(responseObj).build();
-			}else{
+			} else {
 				responseObj.put("Error", "Error while updating Employee");
 				return Response.noContent().entity(responseObj).build();
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.noContent().entity(e.getMessage()).build();
 		}
 	}
 
 	public Response deleteBikeExpense(int id) {
-		try{
+		try {
 
 			BikeExpense emp = bikeExpenseEJBIf.getBikeExpenseById(id);
 			Boolean response = bikeExpenseEJBIf.deleteBikeExpense(emp);
 			Map<String, String> responseObj = new HashMap<String, String>();
-			if(response){
+			if (response) {
 				responseObj.put("Success", "Employee deleted successfully");
 				return Response.ok().entity(responseObj).build();
-			}else{
+			} else {
 				responseObj.put("Error", "Error while deleting Employee");
 				return Response.noContent().entity(responseObj).build();
 			}
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			Map<String, String> responseObj = new HashMap<String, String>();
 			responseObj.put("Error", "Error while deleting Employee");
@@ -151,14 +150,13 @@ public class BikeExpenseImpl implements BikeExpenseIf{
 		}
 	}
 
-	
-	
-	
 	public void validateEmployee(BikeExpenseTO empTO) throws ConstraintViolationException, ValidationException {
 		Set<ConstraintViolation<BikeExpenseTO>> violations = validator.validate(empTO);
 		if (!violations.isEmpty()) {
 			throw new ConstraintViolationException(new HashSet<ConstraintViolation<?>>(violations));
 		}
 	}
+
+	
 
 }

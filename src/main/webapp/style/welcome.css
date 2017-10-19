@@ -116,3 +116,70 @@ body {
 	opacity : 0.4 !important;
 }
 
+
+
+/* for sentiment Analysis  */
+
+.sentimentContainer .nl-sentiment>div.nl-sentiment {
+    display: inline-block;
+    padding: 7px 7px;
+    text-align: center;
+    margin: 0;
+}
+
+.negative.nl-sentiment {
+    background-color: #e53935;
+    color: #fff;
+}
+
+.sentimentContainer nl-sentiment *.nl-sentiment {
+    box-sizing: border-box;
+}
+
+.neutral.nl-sentiment {
+    background-color: #ffe57f;
+    color: #555;
+}
+
+.positive.nl-sentiment {
+    background-color: #388e3c;
+    color: #fff;
+}
+
+
+.legend-title.nl-sentiment {
+    display: inline-block;
+    font-weight: bold;
+    position: relative;
+    color: grey;
+    
+}
+
+
+.legend.nl-sentiment {
+    text-align: center;
+    overflow: auto;
+    color: #999;
+    padding-bottom: 30px;
+}
+
+.score.nl-sentiment {
+    display: inline-block;
+    float: right;
+    width: 8%;
+    padding: 8px 5px 8px 5px;
+    border-radius: 2px;
+    text-align: center;
+    min-width: 10px;
+    font-weight: bold;
+    cursor: default;
+}
+
+
+.sentimentContainer .mt-element-list .list-todo.mt-list-container ul>.mt-list-item>.list-todo-item:after {
+    border: none;
+}
+
+
+
+

@@ -26,9 +26,8 @@
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-oauth2</artifactId>
-			<version>v2-rev95-1.20.0</version>
+			<version>v2-rev129-1.22.0</version>
 		</dependency>
-
 
 
 		<dependency>
@@ -118,11 +117,23 @@
 			<version>6.2.0-edge</version>
 		</dependency>
 
-		
+
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongodb-driver</artifactId>
 			<version>3.4.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-language</artifactId>
+			<version>0.24.0-beta</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>23.0</version>
 		</dependency>
 
 

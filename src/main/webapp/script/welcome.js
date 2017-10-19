@@ -65,6 +65,10 @@ var noOfCalls = 1;
 		$("#linkDrug").click(function(){
 			loadScreen("DR");
 		});
+		
+		$("#linkSentimentAnalysis").click(function(){
+			loadScreen("SA");
+		});
 
 	});
 	
@@ -97,7 +101,10 @@ var noOfCalls = 1;
 			confirmLogout("Are you sure you want to logout? ")
 		}else if(screenName == "PR"){
 			$(".srcContainer").load("property.html");
+		}else if(screenName == "SA"){
+			$(".srcContainer").load("sentimentAnalysis.html");
 		}
+		
 
 	}
 

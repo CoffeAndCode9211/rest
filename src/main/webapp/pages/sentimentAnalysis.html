@@ -1,0 +1,153 @@
+<script type="text/javascript">
+	$("#txtAnalyze").text("");
+	function analyzeText() {
+		
+		if($("#txtAnalyze").val() == "" || $("#txtAnalyze").val().trim() == ""){
+			$("#magnitudeValue").text("");
+			$("#scoreValue").text("");
+			$("#mainListContainer").hide();
+			return false;
+		}
+		
+		$.blockUI({ 
+            message: 'Analyzing Data...', 
+        }); 
+		
+		$.ajax({
+			type : "GET",
+			url : '../rest/gca/sentiment?text='+$("#txtAnalyze").val(),
+			success : function(data) {
+				if (data != null) {
+					$("#magnitudeValue").text(data.magnitude);
+					$("#scoreValue").text(data.score);
+					$("#mainListContainer").show();
+				}else{
+					$("#magnitudeValue").text("");
+					$("#scoreValue").text("");
+					$("#mainListContainer").hide();
+				}
+				$.unblockUI();
+			},
+			error : function(error) {
+				alert(error.Error);
+			}
+		});
+	}
+</script>
+<div class="sentimentContainer">
+	<div class="portlet light bordered">
+		<div class="portlet-title">
+
+			<div class="portlet-title">
+				<div class="caption">
+					<h3 class="nomargin">
+						<span class="caption-subject font-blue-hoki bold">Sentiment
+							Analysis</span>
+					</h3>
+				</div>
+				<div class="actions"></div>
+			</div>
+		</div>
+		<div class="portlet-body">
+
+			<form class="form-horizontal" id="employeeForm">
+				<div class="form-body">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label class="control-label col-sm-2"> &nbsp; </span>
+								</label>
+								<div class="col-sm-10">
+									<textarea class="form-control"
+										placeholder="Enter Text to Analyse" id="txtAnalyze"
+										name="txtAnalyze">
+                                    </textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="col-sm-1">
+							<div class="form-group">
+								<button type="button" onclick="analyzeText()" id="btnSearch" class="btn btn-primary">Analyze</button>
+
+							</div>
+						</div>
+						
+						<div class="col-sm-5">
+						
+							<div class="form-group">
+								<label class="control-label col-sm-4"><div class="legend-title style-scope nl-sentiment">Score
+									Range</div> </span>
+								</label>
+								<div class="col-sm-8">
+									
+									<div class="legend style-scope nl-sentiment">
+										<div class="range style-scope nl-sentiment">
+											<div class="negative style-scope nl-sentiment" title="Negative">
+												-1.0 — -0.25
+											</div>
+											<div class="neutral style-scope nl-sentiment" title="Neutral">
+												-0.25 — 0.25
+											</div>
+											
+											<div class="positive style-scope nl-sentiment" title="Positive">
+												0.25 — 1.0
+											</div>
+											
+										</div>
+									</div>
+									
+								</div>
+							</div>
+			
+						</div>
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-offset-2 col-sm-3" id="mainListContainer" style="display:none;">
+
+
+							<div class="mt-element-list">
+								<div class="mt-list-container list-todo" style="  border: none;">
+									<ul>
+										<li class="mt-list-item" style=" border: none; padding: 5px;">
+											<div class="list-todo-item blue-steel">
+												<a class="list-toggle-container font-white collapsed" >
+													<div class="list-toggle done uppercase">
+														<div class="list-toggle-title bold">Sentiment</div>
+														<div class="badge badge-default pull-right bold" id="scoreValue"></div>
+													</div>
+												</a>
+											</div>
+										</li>
+										
+										<li class="mt-list-item" style=" border: none; padding: 5px;">
+											<div class="list-todo-item blue-steel">
+												<a class="list-toggle-container font-white collapsed" >
+													<div class="list-toggle done uppercase">
+														<div class="list-toggle-title bold">Magnitude</div>
+														<div class="badge badge-default pull-right bold" id="magnitudeValue"></div>
+													</div>
+												</a>
+											</div>
+										</li>
+
+
+									</ul>
+
+								</div>
+							</div>
+							
+						</div>
+
+					</div>
+					
+					
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>
