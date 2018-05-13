@@ -12,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import com.codahale.metrics.annotation.Timed;
+
 
 import com.webservice.dto.BikeExpenseTO;
 
@@ -20,6 +22,7 @@ public interface BikeExpenseIf {
 
 	@GET
 	@Path("/")
+	@Timed
 	@Produces({MediaType.APPLICATION_JSON})
 	public List<BikeExpenseTO> getBikeExpenseDetails(@QueryParam("fromDate")String fromDate, 
 			@QueryParam("toDate") String toDate);
